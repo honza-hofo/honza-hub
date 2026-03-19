@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HOFO — Kreativa. Produkce. AI.</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --green:#00B484;--green-dark:#009A6F;--green-light:rgba(0,180,132,0.08);--green-glow:rgba(0,180,132,0.12);
+  --black:#f0f0f0;--dark:#e0e0e0;--gray:#888;--gray-light:#aaa;--border:#222;
+  --bg:#000;--bg-alt:#0a0a0a;--bg-card:#111;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--black);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::selection{background:var(--green);color:#000}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--green);color:#fff}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:20px 60px;display:flex;align-items:center;justify-content:space-between;transition:all .4s}
+.nav.scrolled{background:rgba(0,0,0,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:14px 60px}
+.nav-logo{font-size:22px;font-weight:900;letter-spacing:3px;color:#fff;transition:color .4s}
+.nav-logo span{color:var(--green)}
+.nav-links{display:flex;gap:36px;align-items:center}
+.nav-links a{font-size:13px;font-weight:600;color:#fff;transition:color .3s;letter-spacing:0.3px}
+.nav-links a:hover{color:#888}
+.nav-cta{padding:10px 26px;background:var(--green);color:#000;font-weight:800;border-radius:8px;font-size:13px;transition:all .3s;box-shadow:0 2px 12px rgba(0,180,132,0.25)}
+.nav-cta:hover{background:var(--green-dark);box-shadow:0 4px 20px rgba(0,180,132,0.35)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;padding:140px 80px 100px;position:relative;background:#000;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-300px;right:-200px;width:700px;height:700px;background:radial-gradient(circle,rgba(0,180,132,0.07),transparent 60%);border-radius:50%;pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-200px;left:10%;width:500px;height:500px;background:radial-gradient(circle,rgba(0,180,132,0.04),transparent 60%);border-radius:50%;pointer-events:none}
+.hero-content{max-width:700px;position:relative;z-index:2}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;background:rgba(0,180,132,0.1);border:1px solid rgba(0,180,132,0.3);color:var(--green);border-radius:40px;font-size:12px;font-weight:700;margin-bottom:32px;letter-spacing:1px}
+.hero-tag .dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-size:64px;font-weight:900;line-height:1.05;margin-bottom:20px;letter-spacing:-2px;color:#f0f0f0}
+.hero h1 span{color:var(--green)}
+.hero h1 em{font-style:normal;color:#666}
+.hero-sub{font-size:18px;font-weight:400;color:#888;line-height:1.7;margin-bottom:36px;max-width:560px}
+.hero-sub strong{color:#ccc;font-weight:600}
+.hero-btns{display:flex;gap:14px;margin-bottom:60px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:16px 36px;border-radius:50px;font-size:15px;font-weight:700;transition:all .3s;border:none;cursor:pointer;font-family:inherit}
+.btn-green{background:var(--green);color:#000;font-weight:800;box-shadow:0 4px 20px rgba(0,180,132,0.3)}
+.btn-green:hover{background:var(--green-dark);transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,180,132,0.4)}
+.btn-ghost{background:transparent;border:1px solid #333;color:#aaa}
+.btn-ghost:hover{border-color:var(--green);color:#fff}
+.hero-stats{display:flex;gap:48px;padding-top:40px;border-top:1px solid #222}
+.h-stat .h-num{font-size:36px;font-weight:900;color:var(--green);line-height:1}
+.h-stat .h-lbl{font-size:12px;color:var(--gray);margin-top:4px;font-weight:500}
+/* REEL */
+.reel-float{position:absolute;right:80px;top:50%;transform:translateY(-50%);z-index:3}
+.reel-circle{width:200px;height:200px;border-radius:50%;border:1px solid #333;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;cursor:pointer;transition:all .4s;background:rgba(255,255,255,0.02)}
+.reel-circle:hover{border-color:var(--green);background:rgba(0,180,132,0.08);transform:scale(1.05)}
+.reel-circle .play{font-size:36px;color:var(--green)}
+.reel-circle .reel-txt{font-size:11px;color:#666;font-weight:600;letter-spacing:2px;text-transform:uppercase}
+
+/* SECTION */
+section{padding:120px 60px}
+.s-label{font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--green);margin-bottom:14px}
+.s-title{font-size:42px;font-weight:800;line-height:1.1;margin-bottom:14px;letter-spacing:-1px;color:var(--black)}
+.s-desc{font-size:16px;color:var(--gray);line-height:1.7;max-width:520px;margin-bottom:48px}
+
+/* LOGOS */
+.logos{padding:48px 60px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg)}
+.logos-row{display:flex;justify-content:center;gap:32px;align-items:center;flex-wrap:nowrap;overflow:hidden}
+.logos-row span{font-size:13px;font-weight:700;letter-spacing:2px;color:#fff;opacity:0.25;white-space:nowrap}
+.logos-more{text-align:center;margin-top:14px;font-size:13px;color:var(--gray);font-style:italic}
+
+/* SERVICES */
+.svc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#1a1a1a;border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.svc{background:var(--bg);padding:40px 32px;transition:all .3s;position:relative}
+.svc:hover{background:#111;border-left:2px solid var(--green)}
+.svc-icon{font-size:28px;margin-bottom:16px;width:48px;height:48px;background:rgba(0,180,132,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center}
+.svc h3{font-size:18px;font-weight:700;margin-bottom:8px;color:var(--black)}
+.svc p{font-size:13px;color:var(--gray);line-height:1.7}
+.svc-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:14px}
+.svc-tag{padding:3px 10px;background:rgba(0,180,132,0.08);border-radius:4px;font-size:10px;color:var(--green);font-weight:600}
+
+/* CASE STUDIES */
+.cases{background:var(--bg-alt)}
+.case-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.case-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:all .4s;cursor:pointer}
+.case-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,0.3);border-color:var(--green)}
+.case-thumb{height:200px;background:#161616;display:flex;align-items:center;justify-content:center;font-size:48px;position:relative}
+.case-play{position:absolute;width:48px;height:48px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;opacity:0;transition:opacity .3s}
+.case-card:hover .case-play{opacity:1}
+.case-info{padding:24px}
+.case-client{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:6px;padding-left:10px;border-left:3px solid var(--green)}
+.case-info h3{font-size:17px;font-weight:700;margin-bottom:8px;color:#fff;line-height:1.3}
+.case-info p{font-size:13px;color:var(--gray);line-height:1.6}
+.case-results{display:flex;gap:20px;margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}
+.cr-num{font-size:20px;font-weight:900;color:var(--green)}
+.cr-lbl{font-size:10px;color:var(--gray);margin-top:1px}
+
+/* CASE DETAIL */
+.cs-detail{display:none;margin-top:24px;background:var(--bg);border:1px solid var(--border);border-radius:16px;overflow:hidden;animation:fadeIn .4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.cs-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:var(--bg-card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--gray);z-index:5;transition:all .3s}
+.cs-close:hover{border-color:var(--green);color:var(--black)}
+
+/* PROCESS */
+.process-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#1a1a1a;border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.step{background:var(--bg);padding:36px 28px;text-align:center;position:relative}
+.step-num{width:40px;height:40px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;margin:0 auto 14px}
+.step h3{font-size:15px;font-weight:700;margin-bottom:6px;color:var(--black)}
+.step p{font-size:13px;color:var(--gray);line-height:1.5}
+
+/* INNOVATION */
+.inno-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.inno-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.inno-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:24px;transition:all .3s}
+.inno-card:hover{border-color:var(--green);background:rgba(0,180,132,0.05)}
+.inno-card .ic-icon{font-size:22px;margin-bottom:10px}
+.inno-card h4{font-size:14px;font-weight:700;color:var(--black);margin-bottom:4px}
+.inno-card p{font-size:12px;color:var(--gray);line-height:1.5}
+
+/* FAQ */
+details{border-bottom:1px solid var(--border);padding:20px 0;cursor:pointer}
+details summary{font-size:16px;font-weight:600;color:var(--black);list-style:none;display:flex;justify-content:space-between;align-items:center}
+details summary .faq-icon{color:var(--green);font-size:20px;transition:transform .3s}
+details[open] summary .faq-icon{transform:rotate(45deg)}
+details p{font-size:14px;color:var(--gray);margin-top:14px;line-height:1.7;max-width:600px}
+
+/* CTA */
+.cta{margin:0 60px 80px;background:var(--green);padding:80px;border-radius:16px;text-align:center;position:relative;overflow:hidden}
+.cta h2{font-size:36px;font-weight:900;color:#000;margin-bottom:10px}
+.cta p{font-size:15px;color:rgba(0,0,0,0.5);margin-bottom:28px}
+.cta .btn-white{display:inline-block;padding:14px 36px;background:#000;color:var(--green);font-weight:700;border-radius:8px;font-size:15px;transition:all .3s}
+.cta .btn-white:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.3)}
+.cta-sub{font-size:12px;color:rgba(0,0,0,0.4);margin-top:14px}
+
+/* FOOTER */
+footer{padding:48px 60px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;gap:40px;color:var(--gray)}
+.foot-logo{font-size:18px;font-weight:900;letter-spacing:3px;color:#fff;margin-bottom:6px}
+.foot-logo span{color:var(--green)}
+.foot-links{display:flex;gap:60px}
+.foot-col h4{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#888;margin-bottom:12px}
+.foot-col a{display:block;font-size:13px;color:var(--gray);padding:3px 0;transition:color .3s}
+.foot-col a:hover{color:var(--green)}
+.foot-social{display:flex;gap:8px;margin-top:12px}
+.foot-social a{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--gray);transition:all .3s}
+.foot-social a:hover{border-color:var(--green);color:var(--green)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(20px);transition:all .6s cubic-bezier(.25,.46,.45,.94)}
+.reveal.vis{opacity:1;transform:translateY(0)}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  .nav{padding:16px 24px}
+  .nav.scrolled{padding:12px 24px}
+  .nav-links{display:none}
+  .hero{padding:120px 24px 80px}
+  .hero h1{font-size:36px}
+  section{padding:80px 24px}
+  .svc-grid{grid-template-columns:1fr}
+  .case-grid{grid-template-columns:1fr}
+  .process-row{grid-template-columns:1fr 1fr}
+  .inno-grid{grid-template-columns:1fr}
+  .cta{margin:0 24px 40px;padding:48px 24px}
+  .hero-stats{flex-wrap:wrap;gap:32px}
+  .s-title{font-size:32px}
+  footer{flex-direction:column;padding:32px 24px}
+  .foot-links{flex-direction:column;gap:24px}
+  .logos-row{flex-wrap:wrap;gap:16px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-logo">HO<span>F</span>O</div>
+  <div class="nav-links">
+    <a href="#sluzby">Služby</a>
+    <a href="#prace">Práce</a>
+    <a href="#proces">Proces</a>
+    <a href="#faq">FAQ</a>
+    <a href="#kontakt" class="nav-cta">Poptat projekt</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-tag"><span class="dot"></span> Bereme nové projekty na Q2 2026</div>
+    <h1>Kreativa. Produkce.<br><span>AI.</span> <em>Celý tým<br>pod jednou střechou.</em></h1>
+    <p class="hero-sub">Video, foto, <strong>správa sociálních sítí</strong>, AI vizuály. Dvě studia v Praze, tým co spolu šlape roky, stovky projektů pro značky co znáte.</p>
+    <div class="hero-btns">
+      <a href="#kontakt" class="btn btn-green">Poptat projekt</a>
+      <a href="#" class="btn btn-ghost">&#9654;&ensp;Showreel</a>
+    </div>
+    <div class="hero-stats">
+      <div class="h-stat"><div class="h-num">500+</div><div class="h-lbl">projektů</div></div>
+      <div class="h-stat"><div class="h-num">12</div><div class="h-lbl">let na trhu</div></div>
+      <div class="h-stat"><div class="h-num">&#9679;</div><div class="h-lbl">vlastní studio a technické zázemí</div></div>
+      <div class="h-stat"><div class="h-num">&#9679;</div><div class="h-lbl">působení po celé ČR</div></div>
+    </div>
+  </div>
+  <div class="reel-float">
+    <div class="reel-circle">
+      <div class="play">&#9654;</div>
+      <div class="reel-txt">Showreel</div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGOS -->
+<div class="logos">
+  <div class="logos-row">
+    <span>PID</span><span>TATRA</span><span>PUDIS</span><span>ATLETICKÝ SVAZ</span><span>ARRIVA</span><span>DETECHA</span><span>HENKEL</span><span>AMUNDSEN</span><span>PALÍRNA U ZELENÉHO STROMU</span><span>SEDLČANSKÝ HERMELÍN</span><span>RITTAL</span><span>EPLAN</span><span>BIOMAG</span><span>ČNB</span>
+  </div>
+  <div class="logos-more">...a mnoho dalších</div>
+</div>
+
+<!-- SLUŽBY -->
+<section id="sluzby">
+  <div class="s-label">Co děláme</div>
+  <h2 class="s-title">Čtyři věci. Všechny pod jednou střechou.</h2>
+  <p class="s-desc">Jeden telefon, jeden tým, kompletní výstup.</p>
+  <div class="svc-grid">
+    <div class="svc reveal">
+      <div class="svc-icon">&#127909;</div>
+      <h3>Produkce</h3>
+      <p>Scénář, casting, natáčení, střih, grading, sound design. Dvě studia, vlastní technika.</p>
+      <div class="svc-tags">
+        <span class="svc-tag">Spoty</span><span class="svc-tag">Videa</span><span class="svc-tag">Foto</span><span class="svc-tag">Stream</span><span class="svc-tag">Podcasty</span><span class="svc-tag">Drony</span>
+      </div>
+    </div>
+    <div class="svc reveal">
+      <div class="svc-icon">&#128241;</div>
+      <h3>Správa sítí &amp; kreativa</h3>
+      <p>Strategie, obsah, plánování, community management. Žádné stock fotky — reálný content.</p>
+      <div class="svc-tags">
+        <span class="svc-tag">Instagram</span><span class="svc-tag">Facebook</span><span class="svc-tag">LinkedIn</span><span class="svc-tag">TikTok</span><span class="svc-tag">Grafika</span>
+      </div>
+    </div>
+    <div class="svc reveal">
+      <div class="svc-icon">&#129302;</div>
+      <h3>AI produkce</h3>
+      <p>Vizuály za dny místo týdnů. AI generuje, tým ladí. Výsledek nepoznáte od klasiky.</p>
+      <div class="svc-tags">
+        <span class="svc-tag">AI vizuály</span><span class="svc-tag">3D</span><span class="svc-tag">Motion</span><span class="svc-tag">Vizualizace</span>
+      </div>
+    </div>
+    <div class="svc reveal">
+      <div class="svc-icon">&#127916;</div>
+      <h3>Vlastní studio</h3>
+      <p>Dvě studia v Praze — video i audio. Makeup, catering, parking. Přijedete, natočíte, hotovo.</p>
+      <div class="svc-tags">
+        <span class="svc-tag">Video studio</span><span class="svc-tag">Audio</span><span class="svc-tag">Podcast Room</span><span class="svc-tag">Pronájem</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDIES -->
+<section class="cases" id="prace">
+  <div class="s-label">Vybraná práce</div>
+  <h2 class="s-title">Neříkáme, že jsme dobří. Ukazujeme to.</h2>
+  <p class="s-desc">Pár projektů, na které jsme pyšní.</p>
+  <div class="case-grid">
+    <div class="case-card reveal" onclick="toggleCS('cs-ropid')">
+      <div class="case-thumb" style="background:linear-gradient(135deg,#0f2a1f,#0a1a14)">
+        <span>&#128651;</span>
+        <div class="case-play">&#9654;</div>
+      </div>
+      <div class="case-info">
+        <div class="case-client">ROPID / PID Praha</div>
+        <h3>18 spotů pro 1,2 milionu cestujících denně</h3>
+        <p>Kampaň PIDikrůček. Jan Vondráček jako PIDiatr Blaž Vršnik.</p>
+        <div class="case-results">
+          <div><div class="cr-num">18</div><div class="cr-lbl">videí</div></div>
+          <div><div class="cr-num">4M+</div><div class="cr-lbl">zhlédnutí</div></div>
+          <div><div class="cr-num">250k+</div><div class="cr-lbl">interakcí</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="case-card reveal">
+      <div class="case-thumb" style="background:linear-gradient(135deg,#2a1f0f,#1a1508)">
+        <span>&#128666;</span>
+        <div class="case-play">&#9654;</div>
+      </div>
+      <div class="case-info">
+        <div class="case-client">Tatra Trucks</div>
+        <h3>Content pro legendu, která jezdí od roku 1850</h3>
+        <p>Kompletní správa sociálních sítí. Videa, zákulisí, eventy.</p>
+        <div class="case-results">
+          <div><div class="cr-num">12+</div><div class="cr-lbl">měsíců</div></div>
+          <div><div class="cr-num">FB+IG</div><div class="cr-lbl">správa</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="case-card reveal">
+      <div class="case-thumb" style="background:linear-gradient(135deg,#0f1a2a,#081218)">
+        <span>&#129302;</span>
+        <div class="case-play">&#9654;</div>
+      </div>
+      <div class="case-info">
+        <div class="case-client">Trinity Bank</div>
+        <h3>AI kampaň za zlomek času a rozpočtu</h3>
+        <p>AI + 3D vizuály. Co trvalo týdny, dodáno za dny.</p>
+        <div class="case-results">
+          <div><div class="cr-num">10x</div><div class="cr-lbl">rychleji</div></div>
+          <div><div class="cr-num">-70%</div><div class="cr-lbl">náklady</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROPID DETAIL -->
+  <div id="cs-ropid" class="cs-detail" style="position:relative">
+    <div class="cs-close" onclick="toggleCS('cs-ropid')">&times;</div>
+    <div style="padding:48px;border-bottom:1px solid var(--border)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:40px;flex-wrap:wrap">
+        <div style="flex:1;min-width:300px">
+          <div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:12px">ROPID / PID Praha</div>
+          <h3 style="font-size:32px;font-weight:900;line-height:1.15;margin-bottom:14px">18 osvětových spotů pro 1,2 milionu cestujících denně</h3>
+          <p style="font-size:15px;color:var(--gray);line-height:1.7;max-width:500px">Kampaň PIDikrůček s Janem Vondráčkem jako PIDiatrem Blažem Vršníkem. Humor, edukace a virální šíření.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;min-width:240px">
+          <div style="background:var(--bg-card);border-radius:12px;padding:20px;text-align:center">
+            <div style="font-size:28px;font-weight:900;color:var(--green)">18</div>
+            <div style="font-size:11px;color:var(--gray);margin-top:2px">videí</div>
+          </div>
+          <div style="background:var(--bg-card);border-radius:12px;padding:20px;text-align:center">
+            <div style="font-size:28px;font-weight:900;color:var(--green)">4 mil+</div>
+            <div style="font-size:11px;color:var(--gray);margin-top:2px">zhlédnutí</div>
+          </div>
+          <div style="background:var(--bg-card);border-radius:12px;padding:20px;text-align:center">
+            <div style="font-size:28px;font-weight:900;color:var(--green)">250k+</div>
+            <div style="font-size:11px;color:var(--gray);margin-top:2px">interakcí</div>
+          </div>
+          <div style="background:var(--bg-card);border-radius:12px;padding:20px;text-align:center">
+            <div style="font-size:28px;font-weight:900;color:var(--green)">4+</div>
+            <div style="font-size:11px;color:var(--gray);margin-top:2px">PR výstupů</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:48px;display:grid;grid-template-columns:1fr 1fr;gap:48px">
+      <div>
+        <h4 style="font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:12px">Zadání</h4>
+        <p style="font-size:14px;color:var(--gray);line-height:1.8;margin-bottom:24px">ROPID potřeboval kampaň, která změní chování cestujících v pražské MHD. Žádné nudné poučování — něco, co bude bavit a šířit se samo.</p>
+        <h4 style="font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:12px">Řešení</h4>
+        <p style="font-size:14px;color:var(--gray);line-height:1.8;margin-bottom:24px">Postava PIDiatra Blaže Vršníka v podání Jana Vondráčka. 18 humorných spotů — kočárky, psi, telefonování, blokování dveří, metro. Režie Štěpán Zálešák.</p>
+        <h4 style="font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:12px">Výsledky</h4>
+        <p style="font-size:14px;color:var(--gray);line-height:1.8">1. místo Reklamní katovna Médiář. Distribuce přes FB PID (63k), IG PID (30k), MHD obrazovky. PR: Médiář, iRozhlas, ČT, Naše Praha, Kurzy.cz.</p>
+      </div>
+      <div>
+        <h4 style="font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:12px">Ukázky</h4>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div style="aspect-ratio:16/9;background:var(--bg-card);border-radius:10px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);flex-direction:column;gap:4px">
+            <div style="font-size:20px;color:var(--green)">&#9654;</div>
+            <div style="font-size:10px;color:var(--gray)">O telefonování</div>
+          </div>
+          <div style="aspect-ratio:16/9;background:var(--bg-card);border-radius:10px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);flex-direction:column;gap:4px">
+            <div style="font-size:20px;color:var(--green)">&#9654;</div>
+            <div style="font-size:10px;color:var(--gray)">O blokování dveří</div>
+          </div>
+          <div style="aspect-ratio:16/9;background:var(--bg-card);border-radius:10px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);flex-direction:column;gap:4px">
+            <div style="font-size:20px;color:var(--green)">&#9654;</div>
+            <div style="font-size:10px;color:var(--gray)">O psech v MHD</div>
+          </div>
+          <div style="aspect-ratio:16/9;background:var(--bg-card);border-radius:10px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);flex-direction:column;gap:4px">
+            <div style="font-size:20px;color:var(--green)">&#9654;</div>
+            <div style="font-size:10px;color:var(--gray)">O eskalátorech</div>
+          </div>
+        </div>
+        <h4 style="font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:12px;margin-top:24px">Média o kampani</h4>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="padding:10px 14px;background:var(--bg-card);border-radius:8px;font-size:12px;color:var(--gray)">Médiář — <span style="color:var(--green);font-weight:600">"Bez ironie skvělé"</span> — 1. místo</div>
+          <div style="padding:10px 14px;background:var(--bg-card);border-radius:8px;font-size:12px;color:var(--gray)">iRozhlas — Střídání hlasů v pražské MHD</div>
+          <div style="padding:10px 14px;background:var(--bg-card);border-radius:8px;font-size:12px;color:var(--gray)">ČT24 — Reportáž o kampani PIDikrůček</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCES -->
+<section id="proces">
+  <div class="s-label">Proces</div>
+  <h2 class="s-title">Od nápadu k výsledku. 4 kroky.</h2>
+  <p class="s-desc">Transparentní spolupráce. Žádné překvapení.</p>
+  <div class="process-row">
+    <div class="step reveal">
+      <div class="step-num">1</div>
+      <h3>Analýza</h3>
+      <p>Porozumíme vašemu byznysu, cílovce a konkurenci.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">2</div>
+      <h3>Strategie &amp; nabídka</h3>
+      <p>Koncept, formáty, rozpočet. Jasně a konkrétně.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">3</div>
+      <h3>Produkce</h3>
+      <p>Natáčení, focení, grafika, AI. Průběžně ukazujeme.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">4</div>
+      <h3>Dodání &amp; výsledky</h3>
+      <p>Výstupy, revize, měření, optimalizace.</p>
+    </div>
+  </div>
+</section>
+
+<!-- INOVACE -->
+<section style="background:var(--bg-alt)">
+  <div class="inno-grid">
+    <div>
+      <div class="s-label">Neustálé zlepšování</div>
+      <h2 class="s-title">Vyvíjíme vlastní nástroje.</h2>
+      <p class="s-desc" style="margin-bottom:20px">Neustále vylepšujeme procesy a efektivitu. Vyvíjíme vlastní interní aplikace, aby každý projekt běžel hladce od briefu po dodání.</p>
+      <p style="font-size:14px;color:var(--gray);line-height:1.7">Méně emailů, méně chaosu, víc času na kreativu.</p>
+    </div>
+    <div class="inno-cards">
+      <div class="inno-card reveal">
+        <div class="ic-icon">&#9881;</div>
+        <h4>Vlastní CMS</h4>
+        <p>Interní systém pro správu projektů a obsahu na míru.</p>
+      </div>
+      <div class="inno-card reveal">
+        <div class="ic-icon">&#128640;</div>
+        <h4>Automatizace</h4>
+        <p>Schvalování a distribuce obsahu bez zbytečných kroků.</p>
+      </div>
+      <div class="inno-card reveal">
+        <div class="ic-icon">&#129302;</div>
+        <h4>AI workflow</h4>
+        <p>AI jako denní nástroj, ne buzzword.</p>
+      </div>
+      <div class="inno-card reveal">
+        <div class="ic-icon">&#128200;</div>
+        <h4>Data &amp; reporting</h4>
+        <p>Výsledky v reálném čase. Žádné čekání.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="s-label">FAQ</div>
+  <h2 class="s-title">Časté otázky</h2>
+  <div style="max-width:640px;margin-top:32px">
+    <details>
+      <summary>Kolik stojí video spot? <span class="faq-icon">+</span></summary>
+      <p>Spot pro socky od 30 000 Kč, reklamní spot pro TV od 150 000 Kč. Vždy dáváme nabídku předem.</p>
+    </details>
+    <details>
+      <summary>Jak dlouho trvá produkce? <span class="faq-icon">+</span></summary>
+      <p>Social content 3–5 dní. Reklamní spot 2–4 týdny. AI vizuály 2–5 dní.</p>
+    </details>
+    <details>
+      <summary>Pracujete i mimo Prahu? <span class="faq-icon">+</span></summary>
+      <p>Studia máme v Praze, ale jezdíme po celé ČR i do zahraničí. USA, Vietnam, Austrálie.</p>
+    </details>
+    <details>
+      <summary>Děláte i správu sociálních sítí? <span class="faq-icon">+</span></summary>
+      <p>Ano — strategie, obsah, plánování, posting, community management. Děláme to pro Tatra Trucks, Jacobs, Palírnu u Zeleného stromu.</p>
+    </details>
+    <details>
+      <summary>Co jsou ty AI vizuály? <span class="faq-icon">+</span></summary>
+      <p>AI + 3D + lidská kreativa. Reklamní vizuál nepoznatelný od klasiky — za zlomek času a ceny.</p>
+    </details>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta" id="kontakt">
+  <h2>Máte projekt? Ozvěte se.</h2>
+  <p>Jeden telefon, do 24 hodin víte, na čem jste.</p>
+  <a href="mailto:honza@hofo.cz" class="btn-white">honza@hofo.cz</a>
+  <div style="margin-top:12px">
+    <a href="tel:+420737060454" class="btn-white" style="font-size:14px;padding:12px 28px">+420 737 060 454</a>
+  </div>
+  <div class="cta-sub">Odpovídáme do 24 hodin. Žádné závazky.</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="foot-logo">HO<span>F</span>O</div>
+    <p style="font-size:12px;color:var(--gray);line-height:1.5">Kreativní digitální produkce.<br>Praha &copy; 2013–2026</p>
+    <div class="foot-social">
+      <a href="https://instagram.com/hofoproduction" target="_blank">IG</a>
+      <a href="https://www.facebook.com/HofoMedia" target="_blank">FB</a>
+      <a href="https://www.linkedin.com/company/5236067/" target="_blank">in</a>
+      <a href="https://www.youtube.com/user/HofoTV" target="_blank">YT</a>
+    </div>
+  </div>
+  <div class="foot-links">
+    <div class="foot-col">
+      <h4>Služby</h4>
+      <a href="#sluzby">Produkce</a>
+      <a href="#sluzby">Správa sítí</a>
+      <a href="#sluzby">AI produkce</a>
+      <a href="#sluzby">Studio</a>
+    </div>
+    <div class="foot-col">
+      <h4>Kontakt</h4>
+      <a href="mailto:honza@hofo.cz">honza@hofo.cz</a>
+      <a href="tel:+420737060454">+420 737 060 454</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50);
+});
+const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('vis')})},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
+
+function toggleCS(id){
+  const el=document.getElementById(id);
+  if(el.style.display==='none'||!el.style.display){
+    el.style.display='block';
+    setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),100);
+  }else{
+    el.style.display='none';
+  }
+}
+</script>
+
+</body>
+</html>
