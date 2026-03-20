@@ -907,8 +907,10 @@ footer{padding:48px 60px;border-top:1px solid var(--border);display:flex;justify
     </div>
   </div>
   <div style="padding:60px">
-    <p id="dp-o-desc" style="font-size:18px;color:var(--gray-light);line-height:1.8;margin-bottom:28px;max-width:700px"></p>
+    <p id="dp-o-desc" style="font-size:18px;color:var(--gray-light);line-height:1.8;margin-bottom:16px;max-width:700px"></p>
     <div id="dp-o-tags" class="svc-tags" style="gap:8px"></div>
+    <div id="dp-o-services"></div>
+    <div id="dp-o-results"></div>
   </div>
 </div>
 
@@ -961,6 +963,12 @@ function showDP(key){
   document.getElementById('dp-o-desc').textContent=data.desc;
   document.getElementById('dp-o-image').src=data.image;
   document.getElementById('dp-o-tags').innerHTML=data.tags.map(t=>'<span class="svc-tag" style="padding:6px 14px;font-size:12px">'+t+'</span>').join('');
+  // Services
+  const svcEl=document.getElementById('dp-o-services');
+  svcEl.innerHTML=data.services?'<h4 style="font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:12px;margin-top:32px">Co jsme dodali</h4><p style="font-size:16px;color:var(--gray-light);line-height:1.8">'+data.services+'</p>':'';
+  // Results
+  const resEl=document.getElementById('dp-o-results');
+  resEl.innerHTML=data.results?'<div style="padding:24px 28px;background:rgba(0,180,132,0.08);border-left:3px solid var(--green);border-radius:0 12px 12px 0;margin-top:28px"><p style="font-size:16px;color:var(--green);font-weight:700;margin:0">'+data.results+'</p></div>':'';
   // Hide all-work
   document.getElementById('all-work').style.display='none';
   document.getElementById('global-close-work').style.display='none';
@@ -975,113 +983,135 @@ const dpData = {
   arriva: {
     client: 'Arriva',
     title: 'Vánoční vlak',
-    desc: 'Vánoční spot pro Arrivu. Režie Štěpán Zálešák, v hlavní roli Bára Hloucalová. Kreativa, casting, natáčení, postprodukce, výroba kostýmů a rekvizit.',
-    tags: ['TV Spot', 'Video', 'Social Media'],
+    desc: 'Arriva v adventu vypravuje vánoční vlak, ve spotu děkuje cestujícím za jejich podporu a věrnost. Režie Štěpán Zálešák, v hlavní roli Bára Hloucalová.',
+    services: 'Kreativní koncept, casting, natáčení, postprodukce, výroba kostýmů a rekvizit.',
+    tags: ['TV Spot', 'Video', 'Social Media', 'Vánoční kampaň'],
     image: 'https://hofo.cz/wp-content/uploads/2025/01/arr241211_153541_0431-enhanced-nr-1024x682.jpg'
   },
   detecha: {
-    client: 'Detecha',
-    title: 'Regina, Jelení lůj',
-    desc: 'Velká vánoční kampaň pro Regina Kosmetiku. Krátká videa, bannery, PPC pro sociální sítě. Zvýšení prodejů i přes konkurenci Notina.',
-    tags: ['Video', 'Social Media', 'PPC', 'Foto'],
+    client: 'Detecha / Regina Kosmetika',
+    title: 'Vánoční kampaň Regina, Jelení lůj',
+    desc: 'Velká vánoční kampaň s krátkými videy, bannery a PPC pro sociální sítě. Zvýšení prodejů i přes silnou konkurenci Notina. Komplexní řešení od kreativy přes casting a natáčení po správu kampaní.',
+    services: 'Kreativa, casting, video, postprodukce, fotografie, bannery, sociální sítě, PPC kampaně.',
+    tags: ['Video', 'Social Media', 'PPC', 'Foto', 'Bannery'],
     image: 'https://hofo.cz/wp-content/uploads/2024/08/Aloe_Square-2-1024x1024.jpg'
   },
   jacobs: {
-    client: 'Jacobs',
-    title: 'Obsah na sociální sítě',
-    desc: 'Formáty pro sociální sítě — nové přebaly obalů Jacobs. Focení a krátká videa kompletně ve vlastním studiu.',
-    tags: ['Video', 'Social Media', 'Foto'],
+    client: 'JDE / Jacobs',
+    title: 'Formáty pro sociální sítě',
+    desc: 'Fotografie a krátká videa pro nové přebaly obalů Jacobs. Kompletní produkce ve vlastním studiu — od konceptu a stavby scény přes focení a natáčení po finální formáty pro sociální sítě.',
+    services: 'Koncept, kreativa, natáčení, postprodukce, fotografie, formáty pro sociální sítě.',
+    tags: ['Video', 'Social Media', 'Foto', 'Produktový obsah'],
     image: 'https://hofo.cz/wp-content/uploads/2022/07/ICED-CAPPUCCINO_detail_krabicka_opravena-kopie-1024x768.jpg'
   },
   viadrus: {
     client: 'Viadrus',
     title: 'Jak Jarda ke kotli přišel',
-    desc: 'TV spot pro Viadrus U68 s Jaromírem Jágrem. Od briefu po finální spot za pouhé 3 týdny. 5 milionů+ oslovených, 200 000+ zhlédnutí online, 454 000 earned media reach.',
-    tags: ['TV Spot', 'Online Video', 'OOH'],
+    desc: 'TV spot pro Viadrus U68 s Jaromírem Jágrem. Zadání jsme dostali 5 minut před koncem pracovní doby, na celý projekt jsme měli 3 týdny. Koncept se Jágrovi natolik líbil, že nám uvolnil stadion v Kladně.',
+    services: 'Kreativní koncept, scénář, casting, lokace, produkce, postprodukce, TV spot, online video, reklamní fotografie.',
+    results: '5M+ oslovených | 200k+ zhlédnutí | 454k earned media | 436k posluchačů rádio Čas',
+    tags: ['TV Spot', 'Online Video', 'OOH', 'Foto'],
     image: 'https://hofo.cz/wp-content/uploads/2021/07/Viadrus_Jaromir_Jagr_28.8.20180106-1024x683.jpg'
   },
   cas: {
     client: 'Český atletický svaz',
     title: 'Podpora české atletiky',
-    desc: 'Kampaně pro Český atletický svaz s Barborou Špotákovou a Benem Cristovao. 800%+ nárůst povědomí, 500 000+ zhlédnutí, 20 000+ fanoušků na akcích.',
-    tags: ['Video', 'Celebrity', 'Sport'],
+    desc: 'Kampaně pro Český atletický svaz v letech 2018–2019 s Barborou Špotákovou a Benem Cristovao. Cílem bylo přitáhnout fanoušky na atletické závody. Natáčení v Ostravě a Kladně s podporou SEAT.',
+    services: 'Video produkce, koordinace atletů, natáčení on-location, kreativa kampaně, BTS obsah.',
+    results: '800%+ nárůst povědomí | 500k+ zhlédnutí | 20k+ fanoušků na akcích',
+    tags: ['Video', 'TV Spot', 'Celebrity', 'Sport'],
     image: 'https://hofo.cz/wp-content/uploads/2021/07/A002_C006_0101HX_001.00_12_21_02.Still002-1024x432.jpg'
   },
   palirna: {
     client: 'Palírna u Zeleného stromu',
     title: 'Content pro sociální sítě',
-    desc: 'Tvorba obsahu pro sociální sítě a aftermovie pro Palírnu u Zeleného stromu a značku Heffron.',
-    tags: ['Video', 'Social Media'],
+    desc: 'Tvorba obsahu pro sociální sítě a aftermovie pro Palírnu u Zeleného stromu a značku Heffron. Pravidelný content zachycující atmosféru značky.',
+    services: 'Tvorba obsahu pro sociální sítě, video produkce, aftermovie.',
+    tags: ['Video', 'Social Media', 'Aftermovie'],
     image: 'https://hofo.cz/wp-content/uploads/2022/03/Heffron_HOFO_tukani-kopie-1024x683.jpg'
   },
   amundsen: {
-    client: 'Amundsen',
+    client: 'Amundsen / STOCK Plzeň',
     title: 'Probuď v sobě 6. smysl',
-    desc: 'Dlouhodobá spolupráce od 2017. Festivaly, sociální sítě, merchandise. 2,3 milionu oslovených, 40 000+ konverzí, 300 000+ zhlédnutí.',
-    tags: ['Video', 'Social Media', 'Festivaly'],
+    desc: 'Dlouhodobá spolupráce od roku 2017 — festivaly, sociální sítě, merchandise. S cyklistou Tomášem Zejdou jsme natočili bumper videa. Kampaň na nový merch Amundsen vodky.',
+    services: 'Organizace festivalů, video produkce, fotografie, bumper videa, merchandise focení, správa sociálních sítí.',
+    results: '2,3M oslovených (18–25 let) | 40k+ konverzí | 300k+ zhlédnutí | 10k+ nových followers',
+    tags: ['Video', 'Social Media', 'Festivaly', 'Foto', 'Merch'],
     image: 'https://hofo.cz/wp-content/uploads/2021/07/amundsen_merch_prostor39_0459_optimized-1024x683.jpg'
   },
   pudis: {
     client: 'PUDIS',
     title: 'Cesta je cíl',
-    desc: 'Kombinovaná náborová a image kampaň. Různé postavy říkají "Cesta je můj cíl" — propojení s dopravní infrastrukturou, kterou PUDIS projektuje.',
-    tags: ['Video', 'Image', 'HR kampaň'],
+    desc: 'Kombinovaná náborová a image kampaň. Jogínka, běžec, motorkář, stopař — každý říká "Cesta je můj cíl." Propojení s dopravní infrastrukturou, kterou PUDIS projektuje. Image spot + HR spot.',
+    services: 'Integrovaný koncept kampaně, kreativní strategie, video produkce, vizuální režie, copywriting.',
+    tags: ['Video', 'TV Spot', 'HR kampaň', 'Image'],
     image: 'https://hofo.cz/wp-content/uploads/2025/05/84e3d9c5-b5f9-4090-b756-4d1e74d1eef0-1024x679.jpg'
   },
   kucharova: {
-    client: 'Taťána Kuchařová',
-    title: 'Noblessní kuchařka',
-    desc: 'Video série Vaříme s kuchařkou — Taťána Kuchařová a Mirka van Gils v kuchyni Noblessa. Recepty + talk show formát.',
-    tags: ['Video', 'Talk Show', 'Social Media'],
+    client: 'Noblessa',
+    title: 'Vaříme s kuchařkou — Taťána Kuchařová',
+    desc: 'Video série kombinující recepty s talk show formátem. Taťána Kuchařová a Mirka van Gils diskutují o dětství a životě v prostředí kuchyně Noblessa. Kreativní koncept, scénář, produkce.',
+    services: 'Kreativní koncept, scénář, video produkce, postprodukce, fotografie, formáty pro sociální sítě.',
+    tags: ['Video', 'Talk Show', 'Recepty', 'Social Media'],
     image: 'https://hofo.cz/wp-content/uploads/2024/08/135-Noblessni-kuchyne-Tatany-Kucharove-Noblessa-kuchynske-studio-YouTube-1024x538.png'
   },
   henkel: {
     client: 'Henkel',
-    title: 'Produktová videa CEE',
-    desc: 'Produktová videa pro lepidla a PU pěny. Natáčení ve Vídni pro Henkel CEE. Vícejazyčné verze, postprodukční retuše.',
-    tags: ['Video', 'Product', 'International'],
+    title: 'Produktová videa pro Henkel CEE',
+    desc: 'Série produktových videí pro lepidla a PU pěny. Natáčení ve vídeňské centrále Henkel ve spolupráci s agenturou Promoangel. Vícejazyčné verze s postprodukčními retušemi a překlady.',
+    services: 'Produktová video produkce, vícejazyčné verze, natáčení on-location (Vídeň), postprodukce, retuše, grafika.',
+    tags: ['Video', 'Produktové video', 'International'],
     image: 'https://hofo.cz/wp-content/uploads/2024/11/pattex2-1024x569.jpg'
   },
   itn: {
     client: 'ITnetwork',
-    title: 'Image, dokument, pořad',
-    desc: 'Kompletní správa AV obsahu — měsíčně krátká videa, časosběry, vlastní pořad, bannery, sociální sítě. 2 500+ lidí dokončilo IT rekvalifikaci.',
-    tags: ['Video', 'Social Media', 'PPC'],
+    title: 'Kompletní správa AV obsahu',
+    desc: 'Průběžná spolupráce — měsíčně krátká videa, časosběry, vlastní publicistický pořad, bannery pro PPC a obsah na sociální sítě. Přes 2 500 lidí úspěšně dokončilo IT rekvalifikační kurzy díky našim kampaním.',
+    services: 'Kreativa, casting, natáčení, postprodukce, fotografie, bannery, sociální sítě, správa kampaní.',
+    results: '2 500+ úspěšných IT rekvalifikací',
+    tags: ['Video', 'Social Media', 'PPC', 'Bannery', 'Foto'],
     image: 'https://hofo.cz/wp-content/uploads/2024/08/itn-scaled.jpg'
   },
   mutumutu: {
     client: 'MutuMutu',
-    title: 'TV kampaň',
-    desc: 'TV reklama za 14 dní od briefu po dodání. 20s spot, 10s spot, BTS obsah.',
-    tags: ['TV Spot', 'Video'],
+    title: 'TV kampaň za 14 dní',
+    desc: 'TV reklama vytvořená za pouhých 14 dní od briefu po finální dodání — koncem roku 2022. Dodali jsme 20s TV spot, 10s spot a BTS obsah.',
+    services: 'TV spot produkce, video produkce, postprodukce.',
+    tags: ['TV Spot', 'Video', 'Produkce'],
     image: 'https://hofo.cz/wp-content/uploads/2024/11/IMG_9055-1024x683.jpg'
   },
   tatra: {
     client: 'Tatra Trucks',
-    title: 'Video content',
-    desc: 'Tvorba video obsahu pro sociální sítě 2020-2022. Natáčení v reálném provozu i v zahraničí. Vznik série Behind the Wheels.',
-    tags: ['Video', 'Social Media', 'Dokument'],
+    title: 'Tvorba obsahu 2020–2022',
+    desc: 'Pro kopřivnickou Tatra Trucks jsme tvořili video obsah na sociální sítě. Nespočet videí z prostředí, kde se Tatry pohybují každý den. Spolupráce vedla ke vzniku série Behind the Wheels. Nejsledovanější video dosáhlo 1,9 milionu zhlédnutí.',
+    services: 'Video produkce, social media content, dokumentární série, eventové natáčení, aftermovie.',
+    results: '1,9M zhlédnutí nejsledovanějšího videa | 2 roky spolupráce | série Behind the Wheels',
+    tags: ['Video', 'Social Media', 'Dokument', 'Aftermovie'],
     image: 'https://hofo.cz/wp-content/uploads/2021/07/215731711_2842695309376142_8538834105948461147_n-1024x678.png'
   },
   hermelin: {
     client: 'Sedlčanský Hermelín',
     title: 'Smažený nebo pečený?',
-    desc: 'Receptová videa s food stylistou Jiřím Navrátilem. Dva recepty — zapékaný hermelín s cuketou a dušený hermelín s cherry rajčaty.',
-    tags: ['Video', 'Food', 'Recepty'],
+    desc: 'Receptová videa s food stylistou Jiřím Navrátilem a fotografem Janem Pelikánem. Dva spoty — zapékaný hermelín s cuketou a dušený hermelín s cherry rajčaty.',
+    services: 'Food styling, fotografie, video produkce (2 spoty), BTS obsah, vývoj receptů.',
+    tags: ['Video', 'Food styling', 'Foto', 'Recepty'],
     image: 'https://hofo.cz/wp-content/uploads/2021/07/Sedlcansky_Hermelin_HoFo_134-1024x1024.jpg'
   },
   cnb: {
-    client: 'ČNB',
+    client: 'Česká národní banka',
     title: 'Finanční trampoty Oty Negramoty',
-    desc: 'První originální seriál ČNB o finanční gramotnosti. Lukáš Pavlásek jako student, člen bankovní rady Aleš Michl jako lektor. Témata od vzniku peněz po hypotéky.',
-    tags: ['Video', 'Edukace', 'Seriál'],
+    desc: 'Historicky první originální seriál ČNB o penězích a finanční gramotnosti pro studenty středních škol. Lukáš Pavlásek jako student Ota Negramota, člen bankovní rady Aleš Michl jako lektor. Témata od vzniku peněz přes kryptoměny po hypotéky a RPSN.',
+    services: 'Produkce video seriálu, edukativní obsah, kreativa.',
+    tags: ['Video', 'Edukace', 'Seriál', 'Social Media'],
     image: 'https://hofo.cz/wp-content/uploads/2022/04/Financni-trampoty-Oty-Negramoty-–-Investicni-special-8.-dil-YouTube.png'
   },
   plesinger: {
     client: 'Plešinger',
-    title: 'Košile na míru',
-    desc: 'Vánoční kampaň na poukazy. Režie Štěpán Zálešák, 10 dní na realizaci. 1 milion+ oslovených, 400%+ nad plán.',
-    tags: ['Video', 'Kampaň', 'Social Media'],
+    title: 'Je-li libo košili na míru?',
+    desc: 'Předvánoční kampaň na prodej poukazů s jemně provokativním videem. Režie Štěpán Zálešák, v hlavní roli Dominik Plešinger. Od briefu po hotovou kampaň za 10 dní.',
+    services: 'Kreativní koncept kampaně, video/reklamní spot, správa kampaně.',
+    results: '1M+ oslovených | 20k organický reach v prvním týdnu | 400%+ nad plán',
+    tags: ['Video', 'Vánoční kampaň', 'Social Media'],
     image: 'https://hofo.cz/wp-content/uploads/2021/07/18_Plesinger-BTS-scaled-1-1024x576.jpg'
   }
 };
