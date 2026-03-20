@@ -816,7 +816,7 @@ footer{padding:48px 60px;border-top:1px solid var(--border);display:flex;justify
 
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
 
-      <div class="case-card" style="cursor:pointer">
+      <div class="case-card" style="cursor:pointer" onclick="toggleCS('cs-ropid')">
         <div class="case-thumb" style="background:url('https://hofo.cz/wp-content/uploads/2023/03/334781523_760487932310387_2098831400933889830_n.jpg') center/cover"></div>
         <div class="case-info">
           <div class="case-client">ROPID / PID Praha</div>
@@ -848,7 +848,7 @@ footer{padding:48px 60px;border-top:1px solid var(--border);display:flex;justify
         </div>
       </div>
 
-      <div class="case-card" style="cursor:pointer">
+      <div class="case-card" style="cursor:pointer" onclick="toggleCS('cs-viadrus')">
         <div class="case-thumb" style="background:url('https://hofo.cz/wp-content/uploads/2021/07/Viadrus_Jaromir_Jagr_28.8.20180106-1024x683.jpg') center/cover"></div>
         <div class="case-info">
           <div class="case-client">Viadrus</div>
@@ -920,7 +920,7 @@ footer{padding:48px 60px;border-top:1px solid var(--border);display:flex;justify
         </div>
       </div>
 
-      <div class="case-card" style="cursor:pointer">
+      <div class="case-card" style="cursor:pointer" onclick="toggleCS('cs-tatra')">
         <div class="case-thumb" style="background:url('https://hofo.cz/wp-content/uploads/2021/07/215731711_2842695309376142_8538834105948461147_n-1024x678.png') center/cover"></div>
         <div class="case-info">
           <div class="case-client">Tatra Trucks</div>
@@ -984,9 +984,13 @@ const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)el.ta
 document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
 
 function toggleCS(id){
-  document.querySelectorAll('.cs-detail').forEach(d=>{d.style.display='none'});
+  // Zavři jen case study detaily, ne all-work
+  document.querySelectorAll('.cs-detail:not(#all-work)').forEach(d=>{d.style.display='none'});
   const el=document.getElementById(id);
   const closeBtn=document.getElementById('global-close');
+  // Schovej all-work pokud je otevřený
+  const allWork=document.getElementById('all-work');
+  if(allWork.style.display==='block'){allWork.style.display='none';document.getElementById('global-close-work').style.display='none'}
   el.style.display='block';
   el.scrollTop=0;
   document.body.style.overflow='hidden';
@@ -996,6 +1000,7 @@ function closeAllCS(){
   document.querySelectorAll('.cs-detail').forEach(d=>{d.style.display='none'});
   document.body.style.overflow='';
   document.getElementById('global-close').style.display='none';
+  document.getElementById('global-close-work').style.display='none';
 }
 
 // Data for Další práce detail panels
