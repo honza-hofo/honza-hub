@@ -94,11 +94,11 @@ section{padding:120px 60px}
 .cr-num{font-size:20px;font-weight:900;color:var(--green)}
 .cr-lbl{font-size:10px;color:var(--gray);margin-top:1px}
 
-/* CASE DETAIL */
-.cs-detail{display:none;margin-top:24px;background:var(--bg);border:1px solid var(--border);border-radius:16px;overflow:hidden;animation:fadeIn .4s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.cs-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:var(--bg-card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--gray);z-index:5;transition:all .3s}
-.cs-close:hover{border-color:var(--green);color:var(--black)}
+/* CASE DETAIL — fullscreen overlay */
+.cs-detail{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9998;background:var(--bg);overflow-y:auto;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.cs-close{position:fixed;top:24px;right:24px;width:48px;height:48px;border-radius:50%;background:rgba(0,0,0,0.6);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:24px;color:#fff;z-index:9999;transition:all .3s}
+.cs-close:hover{background:var(--green);color:#000;border-color:var(--green)}
 
 /* DALSI PRACE DETAIL */
 .dp-detail{display:none;grid-column:1/-1;background:var(--bg);border:1px solid var(--border);border-radius:16px;overflow:hidden;animation:fadeIn .4s ease;position:relative}
@@ -813,12 +813,16 @@ const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)el.ta
 document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
 
 function toggleCS(id){
+  // Zavři všechny ostatní
+  document.querySelectorAll('.cs-detail').forEach(d=>{d.style.display='none'});
   const el=document.getElementById(id);
-  if(el.style.display==='none'||!el.style.display){
-    el.style.display='block';
-    setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),100);
-  }else{
+  if(el.style.display==='block'){
     el.style.display='none';
+    document.body.style.overflow='';
+  }else{
+    el.style.display='block';
+    el.scrollTop=0;
+    document.body.style.overflow='hidden';
   }
 }
 
