@@ -214,13 +214,14 @@ footer{padding:48px 60px;border-top:1px solid var(--border);display:flex;justify
       <div class="h-stat"><div class="h-num">&#9679;</div><div class="h-lbl">působení po celé ČR</div></div>
     </div>
   </div>
-  <!-- Showreel pozadí vpravo -->
+  <!-- Showreel video pozadí vpravo -->
   <div class="hero-video">
     <div class="hero-video-gradient"></div>
-    <img src="https://img.youtube.com/vi/8bPUlSjJSsw/maxresdefault.jpg" alt="HOFO Showreel" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover">
-    <a href="https://www.youtube.com/watch?v=8bPUlSjJSsw" target="_blank" style="position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;text-decoration:none">
-      <div style="width:80px;height:80px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:28px;color:#000;box-shadow:0 8px 30px rgba(0,180,132,0.4);transition:transform .3s" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">▶</div>
-    </a>
+    <video autoplay muted loop playsinline style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover">
+      <source src="https://hofo.cz/wp-content/uploads/2025/03/showreel.mp4" type="video/mp4">
+    </video>
+    <!-- Fallback: pokud MP4 není na serveru, zobrazí thumbnail -->
+    <img src="https://img.youtube.com/vi/8bPUlSjJSsw/maxresdefault.jpg" alt="HOFO Showreel" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-1">
   </div>
 </section>
 
