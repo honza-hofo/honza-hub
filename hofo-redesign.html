@@ -578,7 +578,7 @@ footer{padding:48px 60px;border-top:1px solid var(--border);display:flex;justify
   </div>
 
   <div style="text-align:center;margin-top:40px">
-    <a href="https://hofo.cz/case-study/" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border:1px solid var(--border);border-radius:50px;color:var(--gray-light);font-weight:600;font-size:14px;transition:all .3s;text-decoration:none" onmouseover="this.style.borderColor='var(--green)';this.style.color='#fff'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--gray-light)'">Všechna práce &rarr;</a>
+    <a href="#" onclick="document.getElementById('all-work').style.display='block';document.body.style.overflow='hidden';document.getElementById('global-close-work').style.display='flex';return false" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border:1px solid var(--border);border-radius:50px;color:var(--gray-light);font-weight:600;font-size:14px;transition:all .3s;text-decoration:none" onmouseover="this.style.borderColor='var(--green)';this.style.color='#fff'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--gray-light)'">Všechna práce &rarr;</a>
   </div>
 </section>
 
@@ -805,6 +805,164 @@ footer{padding:48px 60px;border-top:1px solid var(--border);display:flex;justify
     </div>
   </div>
 </footer>
+
+<!-- ALL WORK OVERLAY -->
+<div id="all-work" class="cs-detail">
+  <div id="global-close-work" onclick="document.getElementById('all-work').style.display='none';document.body.style.overflow='';this.style.display='none'" style="position:fixed;top:24px;right:24px;width:48px;height:48px;border-radius:50%;background:rgba(0,0,0,0.7);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);display:none;align-items:center;justify-content:center;cursor:pointer;font-size:24px;color:#fff;z-index:99999" onmouseover="this.style.background='var(--green)';this.style.color='#000'" onmouseout="this.style.background='rgba(0,0,0,0.7)';this.style.color='#fff'">&times;</div>
+
+  <div style="padding:80px 60px">
+    <div style="font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--green);margin-bottom:14px">Portfolio</div>
+    <h2 style="font-size:42px;font-weight:900;line-height:1.1;margin-bottom:48px;color:#f0f0f0">Všechna práce</h2>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+
+      <a href="https://hofo.cz/case-study-ropid/" target="_blank" style="text-decoration:none" class="case-card">
+        <div class="case-thumb" style="background:url('https://hofo.cz/wp-content/uploads/2023/03/334781523_760487932310387_2098831400933889830_n.jpg') center/cover"></div>
+        <div class="case-info">
+          <div class="case-client">ROPID / PID Praha</div>
+          <h3 style="font-size:15px">Osvětová kampaň PIDikrůček</h3>
+        </div>
+      </a>
+
+      <a href="https://hofo.cz/case-study-arriva/" target="_blank" style="text-decoration:none" class="case-card">
+        <div class="case-thumb" style="background:url('https://hofo.cz/wp-content/uploads/2025/01/arr241211_153541_0431-enhanced-nr-1024x682.jpg') center/cover"></div>
+        <div class="case-info">
+          <div class="case-client">Arriva</div>
+          <h3 style="font-size:15px">Vánoční vlak</h3>
+        </div>
+      </a>
+
+      <a href="https://hofo.cz/case-study-detecha/" target="_blank" style="text-decoration:none" class="case-card">
+        <div class="case-thumb" style="background:url('https://hofo.cz/wp-content/uploads/2024/08/Aloe_Square-2-1024x1024.jpg') center/cover"></div>
+        <div class="case-info">
+          <div class="case-client">Detecha</div>
+          <h3 style="font-size:15px">Regina, Jelení lůj</h3>
+        </div>
+      </a>
+
+      <a href="https://hofo.cz/case-study-jacobs/" target="_blank" style="text-decoration:none" class="case-card">
+        <div class="case-thumb" style="background:url('https://hofo.cz/wp-content/uploads/2022/07/ICED-CAPPUCCINO_detail_krabicka_opravena-kopie-1024x768.jpg') center/cover"></div>
+        <div class="case-info">
+          <div class="case-client">Jacobs</div>
+          <h3 style="font-size:15px">Obsah na sociální sítě</h3>
+        </div>
+      </a>
+
+      <a href="https://hofo.cz/case-study-viadrus/" target="_blank" style="text-decoration:none" class="case-card">
+        <div class="case-thumb" style="background:url('https://hofo.cz/wp-content/uploads/2021/07/Viadrus_Jaromir_Jagr_28.8.20180106-1024x683.jpg') center/cover"></div>
+        <div class="case-info">
+          <div class="case-client">Viadrus</div>
+          <h3 style="font-size:15px">Jak Jarda ke kotli přišel</h3>
+        </div>
+      </a>
+
+      <a href="https://hofo.cz/case-study-cas/" target="_blank" style="text-decoration:none" class="case-card">
+        <div class="case-thumb" style="background:url('https://hofo.cz/wp-content/uploads/2021/07/A002_C006_0101HX_001.00_12_21_02.Still002-1024x432.jpg') center/cover"></div>
+        <div class="case-info">
+          <div class="case-client">Český atletický svaz</div>
+          <h3 style="font-size:15px">Podpora české atletiky</h3>
+        </div>
+      </a>
+
+      <a href="https://hofo.cz/case-study-hanacka/" target="_blank" style="text-decoration:none" class="case-card">
+        <div class="case-thumb" style="background:url('https://hofo.cz/wp-content/uploads/2022/03/Heffron_HOFO_tukani-kopie-1024x683.jpg') center/cover"></div>
+        <div class="case-info">
+          <div class="case-client">Palírna u Zeleného stromu</div>
+          <h3 style="font-size:15px">Content pro sociální sítě</h3>
+        </div>
+      </a>
+
+      <a href="https://hofo.cz/case-study-amundsen/" target="_blank" style="text-decoration:none" class="case-card">
+        <div class="case-thumb" style="background:url('https://hofo.cz/wp-content/uploads/2021/07/amundsen_merch_prostor39_0459_optimized-1024x683.jpg') center/cover"></div>
+        <div class="case-info">
+          <div class="case-client">Amundsen</div>
+          <h3 style="font-size:15px">Probuď v sobě 6. smysl</h3>
+        </div>
+      </a>
+
+      <a href="https://hofo.cz/case-study-pudis/" target="_blank" style="text-decoration:none" class="case-card">
+        <div class="case-thumb" style="background:url('https://hofo.cz/wp-content/uploads/2025/05/84e3d9c5-b5f9-4090-b756-4d1e74d1eef0-1024x679.jpg') center/cover"></div>
+        <div class="case-info">
+          <div class="case-client">PUDIS</div>
+          <h3 style="font-size:15px">Cesta je cíl</h3>
+        </div>
+      </a>
+
+      <a href="https://hofo.cz/case-study-kucharova/" target="_blank" style="text-decoration:none" class="case-card">
+        <div class="case-thumb" style="background:url('https://hofo.cz/wp-content/uploads/2024/08/135-Noblessni-kuchyne-Tatany-Kucharove-Noblessa-kuchynske-studio-YouTube-1024x538.png') center/cover"></div>
+        <div class="case-info">
+          <div class="case-client">Taťána Kuchařová</div>
+          <h3 style="font-size:15px">Noblessní kuchařka</h3>
+        </div>
+      </a>
+
+      <a href="https://hofo.cz/case-study-henkel/" target="_blank" style="text-decoration:none" class="case-card">
+        <div class="case-thumb" style="background:url('https://hofo.cz/wp-content/uploads/2024/11/pattex2-1024x569.jpg') center/cover"></div>
+        <div class="case-info">
+          <div class="case-client">Henkel</div>
+          <h3 style="font-size:15px">Produktová videa CEE</h3>
+        </div>
+      </a>
+
+      <a href="https://hofo.cz/case-study-itn/" target="_blank" style="text-decoration:none" class="case-card">
+        <div class="case-thumb" style="background:url('https://hofo.cz/wp-content/uploads/2024/08/itn-scaled.jpg') center/cover"></div>
+        <div class="case-info">
+          <div class="case-client">ITnetwork</div>
+          <h3 style="font-size:15px">Image, dokument, pořad</h3>
+        </div>
+      </a>
+
+      <a href="https://hofo.cz/case-study-mutumutu/" target="_blank" style="text-decoration:none" class="case-card">
+        <div class="case-thumb" style="background:url('https://hofo.cz/wp-content/uploads/2024/11/IMG_9055-1024x683.jpg') center/cover"></div>
+        <div class="case-info">
+          <div class="case-client">MutuMutu</div>
+          <h3 style="font-size:15px">TV kampaň</h3>
+        </div>
+      </a>
+
+      <a href="https://hofo.cz/case-study-tatra/" target="_blank" style="text-decoration:none" class="case-card">
+        <div class="case-thumb" style="background:url('https://hofo.cz/wp-content/uploads/2021/07/215731711_2842695309376142_8538834105948461147_n-1024x678.png') center/cover"></div>
+        <div class="case-info">
+          <div class="case-client">Tatra Trucks</div>
+          <h3 style="font-size:15px">Video content</h3>
+        </div>
+      </a>
+
+      <a href="https://hofo.cz/case-study-hermelin/" target="_blank" style="text-decoration:none" class="case-card">
+        <div class="case-thumb" style="background:url('https://hofo.cz/wp-content/uploads/2021/07/Sedlcansky_Hermelin_HoFo_134-1024x1024.jpg') center/cover"></div>
+        <div class="case-info">
+          <div class="case-client">Sedlčanský Hermelín</div>
+          <h3 style="font-size:15px">Smažený nebo pečený?</h3>
+        </div>
+      </a>
+
+      <a href="https://hofo.cz/case-study-cnb/" target="_blank" style="text-decoration:none" class="case-card">
+        <div class="case-thumb" style="background:url('https://hofo.cz/wp-content/uploads/2022/04/Financni-trampoty-Oty-Negramoty-–-Investicni-special-8.-dil-YouTube.png') center/cover"></div>
+        <div class="case-info">
+          <div class="case-client">ČNB</div>
+          <h3 style="font-size:15px">Finanční trampoty Oty Negramoty</h3>
+        </div>
+      </a>
+
+      <a href="https://hofo.cz/case-study-plesinger/" target="_blank" style="text-decoration:none" class="case-card">
+        <div class="case-thumb" style="background:url('https://hofo.cz/wp-content/uploads/2021/07/18_Plesinger-BTS-scaled-1-1024x576.jpg') center/cover"></div>
+        <div class="case-info">
+          <div class="case-client">Plešinger</div>
+          <h3 style="font-size:15px">Košile na míru</h3>
+        </div>
+      </a>
+
+      <a href="https://hofo.cz/case-study-3d/" target="_blank" style="text-decoration:none" class="case-card">
+        <div class="case-thumb" style="background:url('https://hofo.cz/wp-content/uploads/2024/08/144-pristroj-rozklad-YouTube-1024x523.png') center/cover"></div>
+        <div class="case-info">
+          <div class="case-client">3D Grafika</div>
+          <h3 style="font-size:15px">3D grafika a animace</h3>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</div>
 
 <!-- GLOBAL CLOSE BUTTON -->
 <div id="global-close" onclick="closeAllCS()" style="position:fixed;top:24px;right:24px;width:48px;height:48px;border-radius:50%;background:rgba(0,0,0,0.7);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);display:none;align-items:center;justify-content:center;cursor:pointer;font-size:24px;color:#fff;z-index:99999;transition:all .3s" onmouseover="this.style.background='var(--green)';this.style.color='#000'" onmouseout="this.style.background='rgba(0,0,0,0.7)';this.style.color='#fff'">&times;</div>
