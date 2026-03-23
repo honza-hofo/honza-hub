@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ManMat — Najdi své vybavení</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzFhMWExYSIvPjx0ZXh0IHg9IjUiIHk9IjIyIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSIjYmIxZjJmIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+TTwvdGV4dD48L3N2Zz4=">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--red:#bb1f2f;--red-dark:#971a26;--red-light:rgba(187,31,47,0.08);--bg:#ffffff;--bg-alt:#f7f7f8;--bg-card:#f2f2f3;--text:#1a1a1a;--text-light:#555;--gray:#888;--border:#e5e5e5;--green:#16a34a;--star:#f59e0b}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--red);color:#fff}
+img{max-width:100%;display:block}
+
+/* HEADER */
+.header{background:var(--text);padding:16px 40px;display:flex;align-items:center;justify-content:space-between}
+.header img{height:50px}
+.header a{color:rgba(255,255,255,0.6);font-size:13px;font-weight:600;transition:color .2s}
+.header a:hover{color:#fff}
+
+/* HERO */
+.cfg-hero{text-align:center;padding:60px 40px 40px;background:linear-gradient(180deg,var(--bg-alt) 0%,var(--bg) 100%)}
+.cfg-hero h1{font-size:40px;font-weight:900;letter-spacing:-1.5px;margin-bottom:10px}
+.cfg-hero h1 span{color:var(--red)}
+.cfg-hero p{font-size:16px;color:var(--gray);max-width:500px;margin:0 auto}
+
+/* STEPS */
+.steps{display:flex;justify-content:center;gap:8px;padding:30px 40px 10px}
+.step-dot{display:flex;align-items:center;gap:8px}
+.step-dot .dot{width:32px;height:32px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--gray);transition:all .3s}
+.step-dot.active .dot{background:var(--red);border-color:var(--red);color:#fff}
+.step-dot.done .dot{background:var(--green);border-color:var(--green);color:#fff}
+.step-dot .step-label{font-size:12px;font-weight:600;color:var(--gray)}
+.step-dot.active .step-label{color:var(--text)}
+.step-line{width:40px;height:2px;background:var(--border);align-self:center;margin:0 4px}
+
+/* PANELS */
+.panel{max-width:900px;margin:0 auto;padding:30px 40px 60px;display:none}
+.panel.active{display:block}
+.panel h2{font-size:24px;font-weight:800;margin-bottom:6px;text-align:center}
+.panel .panel-sub{font-size:14px;color:var(--gray);text-align:center;margin-bottom:30px}
+
+/* ACTIVITY CARDS */
+.act-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.act-card{border:2px solid var(--border);border-radius:14px;padding:28px 20px;text-align:center;cursor:pointer;transition:all .25s}
+.act-card:hover{border-color:var(--red);background:var(--red-light)}
+.act-card.selected{border-color:var(--red);background:var(--red-light);box-shadow:0 0 0 3px rgba(187,31,47,0.15)}
+.act-card .act-icon{font-size:40px;margin-bottom:12px}
+.act-card h3{font-size:16px;font-weight:800;margin-bottom:4px}
+.act-card p{font-size:12px;color:var(--gray);line-height:1.4}
+
+/* SIZE CARDS */
+.size-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.size-card{border:2px solid var(--border);border-radius:14px;padding:28px 20px;text-align:center;cursor:pointer;transition:all .25s}
+.size-card:hover{border-color:var(--red);background:var(--red-light)}
+.size-card.selected{border-color:var(--red);background:var(--red-light);box-shadow:0 0 0 3px rgba(187,31,47,0.15)}
+.size-card .size-icon{font-size:40px;margin-bottom:12px}
+.size-card h3{font-size:16px;font-weight:800;margin-bottom:4px}
+.size-card p{font-size:12px;color:var(--gray);line-height:1.4}
+.size-card .breeds{font-size:11px;color:var(--text-light);margin-top:8px;font-style:italic}
+
+/* RESULTS */
+.results-header{text-align:center;margin-bottom:32px}
+.results-header h2{font-size:28px;font-weight:900;margin-bottom:6px}
+.results-header .rh-activity{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;background:var(--red);color:#fff;border-radius:6px;font-size:13px;font-weight:700;margin-bottom:10px}
+.results-header p{font-size:14px;color:var(--gray)}
+
+.rec-section{margin-bottom:36px}
+.rec-section h3{font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.rec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.rec-card{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:all .3s;cursor:pointer}
+.rec-card:hover{border-color:var(--red);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.06)}
+.rec-card.recommended{border-color:var(--red);position:relative}
+.rec-card.recommended::before{content:'Doporučujeme';position:absolute;top:8px;left:8px;background:var(--red);color:#fff;font-size:9px;font-weight:800;padding:3px 8px;border-radius:4px;z-index:2}
+.rec-card .rc-img{aspect-ratio:1;background:var(--bg-card);display:flex;align-items:center;justify-content:center;padding:12px;overflow:hidden}
+.rec-card .rc-img img{width:100%;height:100%;object-fit:contain}
+.rec-card .rc-info{padding:12px}
+.rec-card .rc-info h4{font-size:13px;font-weight:700;margin-bottom:4px;line-height:1.3}
+.rec-card .rc-info .rc-desc{font-size:11px;color:var(--gray);line-height:1.4;margin-bottom:8px}
+.rec-card .rc-info .rc-price{font-size:16px;font-weight:900;color:var(--text)}
+.rec-card .rc-info .rc-link{display:block;text-align:center;padding:8px;background:var(--text);color:#fff;border-radius:6px;font-size:11px;font-weight:700;margin-top:8px;transition:background .2s}
+.rec-card .rc-info .rc-link:hover{background:var(--red)}
+
+/* TOTAL BAR */
+.total-bar{background:var(--bg-alt);border:1px solid var(--border);border-radius:14px;padding:24px 28px;display:flex;justify-content:space-between;align-items:center;margin-top:32px}
+.total-bar .tb-label{font-size:14px;color:var(--gray)}
+.total-bar .tb-label strong{color:var(--text);font-size:20px}
+.total-bar .tb-note{font-size:12px;color:var(--gray);margin-top:4px}
+
+/* BUTTONS */
+.btn-row{display:flex;justify-content:center;gap:12px;margin-top:28px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:10px;font-size:14px;font-weight:700;transition:all .3s;border:none;cursor:pointer;font-family:inherit}
+.btn-red{background:var(--red);color:#fff}
+.btn-red:hover{background:var(--red-dark)}
+.btn-outline{background:transparent;border:2px solid var(--border);color:var(--text)}
+.btn-outline:hover{border-color:var(--red);color:var(--red)}
+.btn:disabled{opacity:0.4;cursor:not-allowed}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .header{padding:12px 20px}
+  .cfg-hero{padding:40px 20px 24px}
+  .cfg-hero h1{font-size:28px}
+  .steps{padding:20px 20px 0}
+  .step-label{display:none}
+  .panel{padding:20px 20px 40px}
+  .act-grid{grid-template-columns:1fr 1fr}
+  .size-grid{grid-template-columns:1fr}
+  .rec-grid{grid-template-columns:1fr 1fr}
+  .total-bar{flex-direction:column;gap:12px;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <a href="manmat_redesign_white.html"><img src="https://honza-hofo.github.io/honza-hub/manmat-logo.png" alt="ManMat"></a>
+  <a href="manmat_redesign_white.html">&larr; Zpět do e-shopu</a>
+</div>
+
+<!-- HERO -->
+<div class="cfg-hero">
+  <h1>Najdi své <span>vybavení</span></h1>
+  <p>Řekni nám, co děláš a jakého máš psa. My ti najdeme to pravé.</p>
+</div>
+
+<!-- STEPS -->
+<div class="steps">
+  <div class="step-dot active" id="sd1"><div class="dot">1</div><span class="step-label">Aktivita</span></div>
+  <div class="step-line"></div>
+  <div class="step-dot" id="sd2"><div class="dot">2</div><span class="step-label">Velikost psa</span></div>
+  <div class="step-line"></div>
+  <div class="step-dot" id="sd3"><div class="dot">3</div><span class="step-label">Výsledek</span></div>
+</div>
+
+<!-- STEP 1: AKTIVITA -->
+<div class="panel active" id="panel1">
+  <h2>Co chceš dělat?</h2>
+  <p class="panel-sub">Vyber disciplínu a my ti doporučíme vybavení přesně na míru.</p>
+  <div class="act-grid">
+    <div class="act-card" data-activity="canicross">
+      <div class="act-icon">&#127939;</div>
+      <h3>Canicross</h3>
+      <p>Běh se psem na šňůře. Nejpopulárnější psí sport.</p>
+    </div>
+    <div class="act-card" data-activity="bikejoring">
+      <div class="act-icon">&#128692;</div>
+      <h3>Bikejöring</h3>
+      <p>Jízda na kole tažená psem. Adrenalin na maximum.</p>
+    </div>
+    <div class="act-card" data-activity="skijoring">
+      <div class="act-icon">&#9975;</div>
+      <h3>Skijöring</h3>
+      <p>Běžky se psem. Zimní verze canicrossu.</p>
+    </div>
+    <div class="act-card" data-activity="mushing">
+      <div class="act-icon">&#128054;</div>
+      <h3>Mushing</h3>
+      <p>Psí spřežení. Pro ty, co to myslí vážně.</p>
+    </div>
+    <div class="act-card" data-activity="hiking">
+      <div class="act-icon">&#127956;</div>
+      <h3>Turistika</h3>
+      <p>Výlety a túry se psem. Pohodlí na prvním místě.</p>
+    </div>
+    <div class="act-card" data-activity="city_walking">
+      <div class="act-icon">&#127961;</div>
+      <h3>Město</h3>
+      <p>Každodenní venčení. Kvalita co vydrží roky.</p>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 2: VELIKOST PSA -->
+<div class="panel" id="panel2">
+  <h2>Jak velký je tvůj pes?</h2>
+  <p class="panel-sub">Podle velikosti doporučíme správnou řadu produktů.</p>
+  <div class="size-grid">
+    <div class="size-card" data-size="small">
+      <div class="size-icon">&#128029;</div>
+      <h3>Malý</h3>
+      <p>Do 10 kg</p>
+      <div class="breeds">Jack Russell, Jezevčík, Shiba Inu, Kokršpaněl...</div>
+    </div>
+    <div class="size-card" data-size="medium">
+      <div class="size-icon">&#128021;</div>
+      <h3>Střední</h3>
+      <p>10 – 25 kg</p>
+      <div class="breeds">Border Kolie, Vizsla, Beagle, Australský ovčák...</div>
+    </div>
+    <div class="size-card" data-size="large">
+      <div class="size-icon">&#128058;</div>
+      <h3>Velký</h3>
+      <p>Nad 25 kg</p>
+      <div class="breeds">Husky, Malamut, Německý ovčák, Rhodéský ridgeback, Vlčák...</div>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-outline" onclick="goStep(1)">&larr; Zpět</button>
+  </div>
+</div>
+
+<!-- STEP 3: VÝSLEDEK -->
+<div class="panel" id="panel3">
+  <div class="results-header">
+    <div class="rh-activity" id="res-activity"></div>
+    <h2>Tvoje vybavení na míru</h2>
+    <p id="res-subtitle"></p>
+  </div>
+  <div id="results-container"></div>
+  <div class="total-bar" id="total-bar">
+    <div>
+      <div class="tb-label">Kompletní set od <strong id="total-price"></strong></div>
+      <div class="tb-note">Doprava zdarma nad 2 000 Kč</div>
+    </div>
+    <a href="manmat_redesign_white.html" class="btn btn-red">Prohlédnout v e-shopu &rarr;</a>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-outline" onclick="goStep(1)">Zkusit jinou kombinaci</button>
+  </div>
+</div>
+
+<script>
+// PRODUCT DATABASE
+const products = {
+  postroje: [
+    {id:"p1891",name:"postroj SMART",price:1007,img:"https://cdn.manmat.cz/images/0/4eb6167d49e71f75/2/postroj-smart.jpg",url:"https://www.manmat.cz/postroj-smart-p1891/",activities:["canicross","bikejoring","skijoring","hiking","city_walking"],sizes:["medium","large"],desc:"Krátký postroj s polstrováním. Vhodný pro psy s citlivou kůží. Snadné oblékání."},
+    {id:"p1500",name:"postroj SLED",price:1052,img:"https://cdn.manmat.cz/images/0/a9c1878a6cd3917e/2/postroj-sled.jpg",url:"https://www.manmat.cz/postroj-sled-p1500/",activities:["canicross","mushing","bikejoring","skijoring","hiking"],sizes:["medium","large"],desc:"Nejuniverzálnější dlouhý postroj X-back. Ideálně rozkládá tažnou sílu."},
+    {id:"p1511",name:"postroj RUN LONG",price:580,img:"https://cdn.manmat.cz/images/0/46aa2c1b889ee97b/2/postroj-run-long.jpg",url:"https://www.manmat.cz/postroj-run-long-p1511/",activities:["canicross","mushing","bikejoring","skijoring","hiking"],sizes:["medium","large"],desc:"Dlouhý X-back postroj s vnitřním polstrováním. Reflexní prvky."},
+    {id:"p1507",name:"postroj GUARD",price:847,img:"https://cdn.manmat.cz/images/0/dea6d9c1616a464b/2/postroj-guard.jpg",url:"https://www.manmat.cz/postroj-guard-p1507/",activities:["canicross","bikejoring","skijoring","hiking","city_walking"],sizes:["small","medium","large"],desc:"Krátký lehký postroj pro procházky i sport. Vhodný pro začátečníky."},
+    {id:"p1513",name:"postroj LONG DISTANCE",price:966,img:"https://cdn.manmat.cz/images/0/3d16049f85c7a08b/2/postroj-long-distance.jpg",url:"https://www.manmat.cz/postroj-long-distance-p1513/",activities:["canicross","mushing","bikejoring","skijoring","hiking"],sizes:["medium","large"],desc:"Měkký materiál pro dlouhé vzdálenosti bez odírání."},
+    {id:"p1516",name:"postroj LIGHT WEIGHT",price:524,img:"https://cdn.manmat.cz/images/0/4e881a8c051acd04/2/postroj-light-weight.jpg",url:"https://www.manmat.cz/postroj-light-weight-p1516/",activities:["canicross","mushing","bikejoring","skijoring"],sizes:["small","medium","large"],desc:"Pro psy s plochým úzkým hrudníkem. Zabraňuje odírání."},
+    {id:"p1517",name:"postroj LIGHT WEIGHT LONG",price:524,img:"https://cdn.manmat.cz/images/0/ba7eb7d89502d183/2/postroj-light-weight-long.jpg",url:"https://www.manmat.cz/postroj-light-weight-long-p1517/",activities:["canicross","mushing","bikejoring","skijoring"],sizes:["medium","large"],desc:"Prodloužená varianta pro psy s delším trupem (vlčák apod.)."},
+    {id:"p1890",name:"postroj RICCO",price:785,img:"https://cdn.manmat.cz/images/0/b21e4f54aab95c7a/2/postroj-ricco.jpg",url:"https://www.manmat.cz/postroj-ricco-p1890/",activities:["hiking","city_walking"],sizes:["small"],desc:"Lehký postroj speciálně pro malá plemena. Šetrný k srsti."},
+    {id:"p1514",name:"postroj HOUND",price:526,img:"https://cdn.manmat.cz/images/0/c758ca45d17a396d/2/postroj-hound.jpg",url:"https://www.manmat.cz/postroj-hound-p1514/",activities:["canicross","mushing","bikejoring","skijoring"],sizes:["medium","large"],desc:"Pro psy s atypickým hrudníkem. Zabraňuje protáčení."},
+    {id:"p1515",name:"postroj SIBERIAN RACE",price:528,img:"https://cdn.manmat.cz/images/0/63f6f5e20f2be2bc/2/postroj-siberian-race.jpg",url:"https://www.manmat.cz/postroj-siberian-race-p1515/",activities:["canicross","mushing","bikejoring","skijoring"],sizes:["medium","large"],desc:"Speciálně pro severská plemena (husky). Koncentruje tažnou sílu."},
+    {id:"p1518",name:"postroj PULKA",price:975,img:"https://cdn.manmat.cz/images/0/2f89986b46bbf792/2/postroj-pulka.jpg",url:"https://www.manmat.cz/postroj-pulka-p1518/",activities:["mushing","skijoring"],sizes:["medium","large"],desc:"Specializovaný postroj pro disciplínu PULKA."},
+    {id:"p1509",name:"postroj HALF LASH",price:1285,img:"https://cdn.manmat.cz/images/0/6db450e7ac23dd9e/2/postroj-half-lash.jpeg",url:"https://www.manmat.cz/postroj-half-lash-p1509/",activities:["canicross","bikejoring","skijoring","hiking"],sizes:["medium","large"],desc:"PU pěnové polstrování. Pro rekreační psí sporty."},
+    {id:"p1510",name:"postroj LASH",price:1329,img:"https://cdn.manmat.cz/images/0/f593cf4f434ba05e/2/postroj-lash.jpeg",url:"https://www.manmat.cz/postroj-lash-p1510/",activities:["canicross","mushing","bikejoring","skijoring","hiking"],sizes:["medium","large"],desc:"Šampionský postroj. PU pěna, lehký, bez zápachu."}
+  ],
+  obojky: [
+    {id:"p1551",name:"obojek POLSTROVANÝ DESIGN",price:321,img:"https://cdn.manmat.cz/images/0/4bea75c15e12beec/2/obojek-polstrovany-design.jpg",url:"https://www.manmat.cz/obojek-polstrovany-design-p1551/",activities:["canicross","mushing","bikejoring","skijoring","hiking","city_walking"],sizes:["medium","large"],desc:"Polstrovaný obojek. Šetrný ke kůži."},
+    {id:"p1502",name:"obojek STANDARD",price:373,img:"https://cdn.manmat.cz/images/0/3dd55efb02bffedc/2/obojek-standard.jpg",url:"https://www.manmat.cz/obojek-standard-p1502/",activities:["canicross","mushing","bikejoring","skijoring","hiking","city_walking"],sizes:["medium","large"],desc:"Klasický obojek s nerezovým D-okem. Ručně šitý."},
+    {id:"p2280",name:"obojek STANDARD SPONA",price:372,img:"https://cdn.manmat.cz/images/0/e2245f5e29c57b7b/2/obojek-standard-spona.jpg",url:"https://www.manmat.cz/obojek-standard-spona-p2280/",activities:["canicross","mushing","bikejoring","skijoring","hiking","city_walking"],sizes:["medium","large"],desc:"Obojek se sponou odolnou proti mrazu."},
+    {id:"p1503",name:"obojek POLOSTAHOVACÍ",price:375,img:"https://cdn.manmat.cz/images/0/3f6b37ce5e8004df/2/obojek-standard-polostahovaci.jpg",url:"https://www.manmat.cz/obojek-standard-polostahovaci-p1503/",activities:["canicross","mushing","bikejoring","skijoring","hiking","city_walking"],sizes:["medium","large"],desc:"Pro psy s tendencí táhnout. Kontrolovaný stah."},
+    {id:"p1550",name:"obojek POLSTROVANÝ",price:396,img:"https://cdn.manmat.cz/images/0/5b95955db8c26864/2/obojek-polstrovany.jpg",url:"https://www.manmat.cz/obojek-polstrovany-p1550/",activities:["canicross","mushing","bikejoring","skijoring","hiking","city_walking"],sizes:["medium","large"],desc:"Polstrovaný obojek pro citlivou kůži."},
+    {id:"p2281",name:"obojek pro MALÁ PLEMENA SPONA",price:341,img:"https://cdn.manmat.cz/images/0/9b612822094acc49/2/obojek-pro-mala-plemena-spona.jpeg",url:"https://www.manmat.cz/obojek-pro-mala-plemena-spona-p2281/",activities:["canicross","mushing","bikejoring","skijoring","hiking","city_walking"],sizes:["small"],desc:"Lehký obojek s mrazuvzdornou sponou pro malá plemena."},
+    {id:"p1552",name:"obojek pro MALÁ PLEMENA",price:343,img:"https://cdn.manmat.cz/images/0/2e591b6ac4d4bb5c/2/obojek-pro-mala-plemena.jpg",url:"https://www.manmat.cz/obojek-pro-mala-plemena-p1552/",activities:["canicross","mushing","bikejoring","skijoring","hiking","city_walking"],sizes:["small"],desc:"Pro malá plemena a štěňata. Menší oko."}
+  ],
+  snury: [
+    {id:"p1900",name:"šňůra s AMORTIZÉREM a ALU karabinou",price:856,img:"https://cdn.manmat.cz/images/0/e56b9560135636ac/2/snura-s-amortizerem-a-alu-karabinou.jpg",url:"https://www.manmat.cz/snura-s-amortizerem-a-alu-karabinou-p1900/",activities:["canicross","bikejoring","skijoring","hiking"],sizes:["all"],desc:"ALU karabina (400kg). Amortizér z obou stran."},
+    {id:"p3318",name:"CELOODPRUŽENÁ šňůra s ALU karabinou",price:836,img:"https://cdn.manmat.cz/images/0/df91a9f9431a214c/2/celoodpruzena-snura-s-alu-karabinou.jpg",url:"https://www.manmat.cz/celoodpruzena-snura-s-alu-karabinou-p3318/",activities:["bikejoring","skijoring","hiking"],sizes:["all"],desc:"Celoodpružená. Splňuje IFSS standardy."},
+    {id:"p1560",name:"DLOUHÁ šňůra s AMORTIZÉREM",price:767,img:"https://cdn.manmat.cz/images/0/d0bc3464c2a976cb/2/dlouha-snura-s-amortizerem.jpg",url:"https://www.manmat.cz/dlouha-snura-s-amortizerem-p1560/",activities:["bikejoring","skijoring","hiking"],sizes:["all"],desc:"2,5m. Pro bikejöring a skijöring."},
+    {id:"p1559",name:"CANICROSS šňůra",price:758,img:"https://cdn.manmat.cz/images/0/6daaa7eab87488ca/2/canicross-snura.jpg",url:"https://www.manmat.cz/canicross-snura-p1559/",activities:["canicross","hiking"],sizes:["all"],desc:"2m šňůra. Splňuje pravidla canicross závodů."},
+    {id:"p1557",name:"SNAP šňůra",price:900,img:"https://cdn.manmat.cz/images/0/2c21547bfd6c2c1e/2/snap-snura.jpg",url:"https://www.manmat.cz/snap-snura-p1557/",activities:["skijoring","hiking"],sizes:["medium","large"],desc:"3m s amortizéry na obou stranách. Pro skijöring."},
+    {id:"p1538",name:"MUSHING šňůry do spřežení",price:73,img:"https://cdn.manmat.cz/images/0/5bead16c1fd313f8/2/mushing-snury-do-sprezeni.jpg",url:"https://www.manmat.cz/mushing-snury-do-sprezeni-p1538/",activities:["mushing"],sizes:["all"],desc:"Tažné šňůry s reflexní páskou pro spřežení."},
+    {id:"p1967",name:"AMORTIZÉR k saním",price:508,img:"https://cdn.manmat.cz/images/0/af4f9c94c1787483/2/amortizer-k-sanim.jpg",url:"https://www.manmat.cz/amortizer-k-sanim-p1967/",activities:["mushing"],sizes:["all"],desc:"Tlumí tahový ráz ve spřežení."}
+  ],
+  voditka: [
+    {id:"p1524",name:"vodítko PŘEPÍNACÍ",price:395,img:"https://cdn.manmat.cz/images/0/7e2427e347868c94/2/voditko-prepinaci.jpg",url:"https://www.manmat.cz/voditko-prepinaci-p1524/",activities:["city_walking"],sizes:["all"],desc:"Nastavitelná délka. Pro procházky i výcvik."},
+    {id:"p1522",name:"vodítko s AMORTIZÉREM",price:484,img:"https://cdn.manmat.cz/images/0/9d74de70669f384f/2/voditko-s-amortizerem.jpg",url:"https://www.manmat.cz/voditko-s-amortizerem-p1522/",activities:["city_walking","hiking"],sizes:["all"],desc:"Tlumí trhnutí. Chrání klouby. 175cm."},
+    {id:"p1520",name:"vodítko PLOCHÉ",price:374,img:"https://cdn.manmat.cz/images/0/9c16e34362bb23f9/2/voditko-ploche.jpg",url:"https://www.manmat.cz/voditko-ploche-p1520/",activities:["city_walking"],sizes:["medium","large"],desc:"Lehké ploché vodítko. Neřeže do rukou. 180cm."},
+    {id:"p1525",name:"vodítko pro MALÁ PLEMENA",price:348,img:"https://cdn.manmat.cz/images/0/d37658495c155b57/2/voditko-ploche-pro-mala-plemena.jpg",url:"https://www.manmat.cz/voditko-ploche-pro-mala-plemena-p1525/",activities:["city_walking"],sizes:["small"],desc:"Lehké vodítko s menší karabinou. 175cm."},
+    {id:"p1519",name:"vodítko PLETENÉ",price:314,img:"https://cdn.manmat.cz/images/0/19f9ff4227262308/2/voditko-pletene.jpg",url:"https://www.manmat.cz/voditko-pletene-p1519/",activities:["city_walking"],sizes:["all"],desc:"Extra pevné. Příjemné do ruky. 180cm."}
+  ],
+  opasky: [
+    {id:"p1976",name:"opasek RACE PRO",price:1199,img:"https://cdn.manmat.cz/images/0/327d3c5977435ebd/2/opasek-race-pro.jpg",url:"https://www.manmat.cz/opasek-race-pro-p1976/",activities:["canicross"],desc:"Závodní opasek. Extrémně lehký, efektivní rozložení tahu."},
+    {id:"p1556",name:"opasek CANICROSS",price:1165,img:"https://cdn.manmat.cz/images/0/55cb76f552d0c24f/2/opasek-canicross.jpg",url:"https://www.manmat.cz/opasek-canicross-p1556/",activities:["canicross","skijoring","hiking"],desc:"Lehký opasek s polstrováním. Více úchytných bodů."},
+    {id:"p2588",name:"opasek DOGTREK",price:1197,img:"https://cdn.manmat.cz/images/0/20e1db719730af05/2/opasek-dogtrek.jpg",url:"https://www.manmat.cz/opasek-dogtrek-p2588/",activities:["canicross","hiking"],desc:"Pro dogtrekking a začátečníky. Komfortní na dlouhé vzdálenosti."},
+    {id:"p449",name:"opasek SKI (DOGTREKKING)",price:990,img:"https://cdn.manmat.cz/images/0/1ff70e08f0d79396/2/opasek-ski-dogtrekking.jpg",url:"https://www.manmat.cz/opasek-ski-dogtrekking-p449/",activities:["skijoring","hiking"],desc:"Univerzální opasek s odnímatelnými nohavicemi. PU pěna."}
+  ]
+};
+
+// RECOMMENDED COMBOS per activity — first item in each category is "recommended"
+const recommendations = {
+  canicross: {
+    label: "Canicross",
+    icon: "&#127939;",
+    subtitle: "Kompletní set pro běh se psem",
+    postroje_top: ["p1891","p1500","p1513"],
+    snury_top: ["p1900","p1559"],
+    opasky_top: ["p1976","p1556"]
+  },
+  bikejoring: {
+    label: "Bikejöring",
+    icon: "&#128692;",
+    subtitle: "Vybavení pro jízdu na kole se psem",
+    postroje_top: ["p1500","p1511","p1513"],
+    snury_top: ["p3318","p1560","p1900"],
+    opasky_top: []
+  },
+  skijoring: {
+    label: "Skijöring",
+    icon: "&#9975;",
+    subtitle: "Zimní vybavení pro běžky se psem",
+    postroje_top: ["p1500","p1511","p1518"],
+    snury_top: ["p1557","p3318","p1900"],
+    opasky_top: ["p449","p1556"]
+  },
+  mushing: {
+    label: "Mushing",
+    icon: "&#128054;",
+    subtitle: "Profesionální vybavení pro psí spřežení",
+    postroje_top: ["p1500","p1511","p1515"],
+    snury_top: ["p1538","p1967"],
+    opasky_top: []
+  },
+  hiking: {
+    label: "Turistika",
+    icon: "&#127956;",
+    subtitle: "Pohodlné vybavení na výlety a túry",
+    postroje_top: ["p1507","p1891","p1509"],
+    snury_top: ["p1900","p1559"],
+    opasky_top: ["p2588","p1556"]
+  },
+  city_walking: {
+    label: "Město",
+    icon: "&#127961;",
+    subtitle: "Kvalitní vybavení na každodenní venčení",
+    postroje_top: ["p1507","p1891"],
+    voditka_top: ["p1522","p1524","p1520"],
+    opasky_top: []
+  }
+};
+
+let selectedActivity = null;
+let selectedSize = null;
+
+// STEP 1 — select activity
+document.querySelectorAll('.act-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.act-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    selectedActivity = card.dataset.activity;
+    setTimeout(() => goStep(2), 300);
+  });
+});
+
+// STEP 2 — select size
+document.querySelectorAll('.size-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.size-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    selectedSize = card.dataset.size;
+    setTimeout(() => goStep(3), 300);
+  });
+});
+
+function goStep(n) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel' + n).classList.add('active');
+
+  document.querySelectorAll('.step-dot').forEach((s, i) => {
+    s.classList.remove('active', 'done');
+    if (i + 1 < n) s.classList.add('done');
+    if (i + 1 === n) s.classList.add('active');
+  });
+
+  if (n === 3) buildResults();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function findProduct(id) {
+  for (const cat of Object.values(products)) {
+    const p = cat.find(x => x.id === id);
+    if (p) return p;
+  }
+  return null;
+}
+
+function filterBySize(prods) {
+  return prods.filter(p => {
+    if (!p.sizes) return true;
+    return p.sizes.includes(selectedSize) || p.sizes.includes('all');
+  });
+}
+
+function buildResults() {
+  const rec = recommendations[selectedActivity];
+  if (!rec) return;
+
+  document.getElementById('res-activity').innerHTML = rec.icon + ' ' + rec.label;
+  document.getElementById('res-subtitle').textContent = rec.subtitle + ' — velikost: ' +
+    (selectedSize === 'small' ? 'malý pes' : selectedSize === 'medium' ? 'střední pes' : 'velký pes');
+
+  const container = document.getElementById('results-container');
+  container.innerHTML = '';
+  let totalMin = 0;
+
+  // Sections to show
+  const sections = [
+    { key: 'postroje_top', label: 'Postroj pro psa', cat: 'postroje', fallbackCat: products.postroje },
+    { key: 'snury_top', label: 'Šňůra', cat: 'snury', fallbackCat: products.snury },
+    { key: 'voditka_top', label: 'Vodítko', cat: 'voditka', fallbackCat: products.voditka },
+    { key: 'opasky_top', label: 'Opasek pro tebe', cat: 'opasky', fallbackCat: products.opasky },
+    { key: 'obojky', label: 'Obojek', cat: 'obojky', fallbackCat: products.obojky, auto: true }
+  ];
+
+  sections.forEach(sec => {
+    let items;
+    if (sec.auto) {
+      // Auto-filter obojky by size
+      items = filterBySize(sec.fallbackCat);
+    } else {
+      const ids = rec[sec.key];
+      if (!ids || ids.length === 0) return;
+      items = ids.map(findProduct).filter(Boolean);
+      items = filterBySize(items);
+    }
+
+    if (items.length === 0) return;
+
+    // Track cheapest for total
+    const cheapest = Math.min(...items.map(p => p.price));
+    totalMin += cheapest;
+
+    const section = document.createElement('div');
+    section.className = 'rec-section';
+    section.innerHTML = '<h3>' + sec.label + '</h3>';
+
+    const grid = document.createElement('div');
+    grid.className = 'rec-grid';
+
+    items.forEach((p, i) => {
+      const card = document.createElement('div');
+      card.className = 'rec-card' + (i === 0 ? ' recommended' : '');
+      card.innerHTML = `
+        <div class="rc-img"><img src="${p.img}" alt="${p.name}"></div>
+        <div class="rc-info">
+          <h4>${p.name}</h4>
+          <div class="rc-desc">${p.desc}</div>
+          <div class="rc-price">${p.price.toLocaleString('cs-CZ')} Kč</div>
+          <a href="${p.url}" target="_blank" class="rc-link">Zobrazit detail &rarr;</a>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+
+    section.appendChild(grid);
+    container.appendChild(section);
+  });
+
+  document.getElementById('total-price').textContent = totalMin.toLocaleString('cs-CZ') + ' Kč';
+}
+</script>
+
+</body>
+</html>
