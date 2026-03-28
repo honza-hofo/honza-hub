@@ -1,0 +1,24 @@
+RewriteEngine On
+
+# Force HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# API routes -> api.php
+RewriteRule ^api/register$ api.php?action=register [L,QSA]
+RewriteRule ^api/login$ api.php?action=login [L,QSA]
+RewriteRule ^api/logout$ api.php?action=logout [L,QSA]
+RewriteRule ^api/me$ api.php?action=me [L,QSA]
+RewriteRule ^api/reset-password$ api.php?action=reset-password [L,QSA]
+RewriteRule ^api/account$ api.php?action=delete-account [L,QSA]
+RewriteRule ^api/export$ api.php?action=export [L,QSA]
+
+# /api/data: POST=save, GET=load
+RewriteCond %{REQUEST_METHOD} POST
+RewriteRule ^api/data$ api.php?action=save [L,QSA]
+RewriteCond %{REQUEST_METHOD} GET
+RewriteRule ^api/data$ api.php?action=load [L,QSA]
+
+# App route
+RewriteRule ^app$ index.html [L]
+RewriteRule ^landing$ landing.html [L]
