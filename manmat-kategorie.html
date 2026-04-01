@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canicross — ManMat</title>
+<style>
+:root{--red:#bb1f2f;--text:#1a1a1a;--gray:#6b7280;--border:#e5e7eb;--bg:#f9fafb;--white:#fff}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text);background:var(--bg)}
+
+/* TOP BAR */
+.top-bar{background:var(--red);color:#fff;text-align:center;padding:8px;font-size:12px;font-weight:500;letter-spacing:0.5px}
+header{background:var(--white);border-bottom:1px solid var(--border);padding:0 24px;position:sticky;top:0;z-index:100}
+.header-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{font-size:22px;font-weight:900;color:var(--text);text-decoration:none;letter-spacing:-0.5px}
+.logo span{color:var(--red)}
+nav a{color:var(--text);text-decoration:none;font-size:13px;font-weight:600;margin-left:24px;transition:color .2s}
+nav a:hover{color:var(--red)}
+.header-icons{display:flex;gap:16px;align-items:center}
+.header-icons a{color:var(--text);text-decoration:none;font-size:18px}
+.cart-badge{background:var(--red);color:#fff;font-size:10px;padding:1px 5px;border-radius:10px;font-weight:700;margin-left:2px;vertical-align:super}
+
+/* BREADCRUMB */
+.breadcrumb{max-width:1400px;margin:0 auto;padding:16px 24px;font-size:12px;color:var(--gray)}
+.breadcrumb a{color:var(--gray);text-decoration:none}
+.breadcrumb a:hover{color:var(--red)}
+
+/* LAYOUT */
+.page-layout{max-width:1400px;margin:0 auto;padding:0 24px 60px;display:grid;grid-template-columns:260px 1fr;gap:32px}
+
+/* SIDEBAR */
+.sidebar{position:sticky;top:80px;align-self:start}
+.filter-group{margin-bottom:24px}
+.filter-group h4{font-size:13px;font-weight:700;margin-bottom:10px;color:var(--text);text-transform:uppercase;letter-spacing:0.5px}
+.filter-group label{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);padding:4px 0;cursor:pointer}
+.filter-group label:hover{color:var(--red)}
+.filter-group input[type=checkbox]{accent-color:var(--red);width:15px;height:15px}
+.filter-count{color:var(--gray);font-size:11px;margin-left:auto}
+.price-range{display:flex;gap:8px;align-items:center}
+.price-range input{width:80px;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-size:13px}
+.price-range span{color:var(--gray);font-size:13px}
+.filter-btn{background:var(--red);color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;width:100%;margin-top:8px}
+.filter-btn:hover{opacity:0.9}
+
+/* CATEGORY HEADER */
+.cat-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.cat-header h1{font-size:24px;font-weight:800}
+.cat-header h1 span{color:var(--gray);font-weight:400;font-size:16px;margin-left:6px}
+.cat-sort{display:flex;align-items:center;gap:8px}
+.cat-sort label{font-size:12px;color:var(--gray)}
+.cat-sort select{padding:6px 12px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--white)}
+.view-toggle{display:flex;gap:4px}
+.view-toggle button{width:32px;height:32px;border:1px solid var(--border);background:var(--white);border-radius:6px;cursor:pointer;font-size:14px}
+.view-toggle button.active{background:var(--text);color:#fff;border-color:var(--text)}
+
+/* PRODUCT GRID */
+.prod-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.prod-card{background:var(--white);border-radius:12px;border:1px solid var(--border);overflow:hidden;transition:all .3s;position:relative}
+.prod-card:hover{box-shadow:0 8px 30px rgba(0,0,0,0.08);transform:translateY(-2px);border-color:var(--red)}
+.prod-img{position:relative;aspect-ratio:1;background:#fafafa;overflow:hidden}
+.prod-img img{width:100%;height:100%;object-fit:contain;padding:20px;transition:transform .3s}
+.prod-card:hover .prod-img img{transform:scale(1.05)}
+.prod-badge{position:absolute;top:10px;left:10px;padding:4px 10px;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px}
+.prod-badge.bestseller{background:var(--red);color:#fff}
+.prod-badge.new{background:#16a34a;color:#fff}
+.prod-badge.sale{background:#f59e0b;color:#fff}
+.prod-wishlist{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;background:var(--white);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:all .2s;z-index:2}
+.prod-wishlist:hover{border-color:var(--red);color:var(--red)}
+.prod-colors{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:4px}
+.prod-colors span{width:14px;height:14px;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.15)}
+.prod-info{padding:14px 16px 16px}
+.prod-cat{font-size:11px;color:var(--gray);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.3px}
+.prod-info h3{font-size:14px;font-weight:700;margin-bottom:6px;line-height:1.3}
+.prod-info h3 a{color:var(--text);text-decoration:none}
+.prod-info h3 a:hover{color:var(--red)}
+.prod-stars{font-size:12px;color:#f59e0b;margin-bottom:8px}
+.star-count{color:var(--gray);font-size:11px;margin-left:4px}
+.prod-pricing{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}
+.prod-price{font-size:16px;font-weight:800;color:var(--text)}
+.prod-price-old{font-size:13px;color:var(--gray);text-decoration:line-through}
+.prod-stock{font-size:11px;color:#16a34a;margin-bottom:10px}
+.prod-stock.out{color:var(--gray)}
+.prod-btn{width:100%;padding:10px;background:var(--red);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.prod-btn:hover{opacity:0.9;transform:translateY(-1px)}
+
+/* PAGINATION */
+.pagination{display:flex;justify-content:center;align-items:center;gap:4px;margin-top:32px}
+.pagination a,.pagination span{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;color:var(--text);border:1px solid var(--border);background:var(--white);transition:all .2s}
+.pagination a:hover{border-color:var(--red);color:var(--red)}
+.pagination .active{background:var(--red);color:#fff;border-color:var(--red)}
+.pagination .dots{border:none;background:none}
+
+/* FOOTER */
+footer{background:var(--text);color:#fff;padding:40px 24px;margin-top:40px}
+.foot-inner{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
+.foot-col h4{font-size:12px;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;color:rgba(255,255,255,0.5)}
+.foot-col a{display:block;color:rgba(255,255,255,0.7);text-decoration:none;font-size:13px;padding:3px 0}
+.foot-col a:hover{color:#fff}
+.foot-bottom{max-width:1400px;margin:20px auto 0;padding-top:20px;border-top:1px solid rgba(255,255,255,0.1);font-size:11px;color:rgba(255,255,255,0.4);display:flex;justify-content:space-between}
+
+@media(max-width:1024px){.prod-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:768px){
+  .page-layout{grid-template-columns:1fr}
+  .sidebar{position:static}
+  .prod-grid{grid-template-columns:repeat(2,1fr)}
+  .foot-inner{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">Doprava zdarma nad 2 000 Kč | Záruka 5 let na šití | Česká ruční výroba od 1992</div>
+
+<header>
+  <div class="header-inner">
+    <a href="manmat-redesign-white.html" class="logo">MAN<span>MAT</span></a>
+    <nav>
+      <a href="#">Pro psy</a>
+      <a href="#" style="color:var(--red);border-bottom:2px solid var(--red);padding-bottom:2px">Canicross</a>
+      <a href="#">Mushing</a>
+      <a href="#">Bikejöring</a>
+      <a href="#">Koně</a>
+      <a href="#">B2B</a>
+    </nav>
+    <div class="header-icons">
+      <a href="#">&#128269;</a>
+      <a href="#">&#9829;</a>
+      <a href="#">&#128722;<span class="cart-badge">2</span></a>
+    </div>
+  </div>
+</header>
+
+<div class="breadcrumb">
+  <a href="manmat-redesign-white.html">Domů</a> / <a href="#">Pro psy</a> / <strong>Canicross</strong>
+</div>
+
+<div class="page-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="filter-group">
+      <h4>Typ produktu</h4>
+      <label><input type="checkbox" checked> Postroje <span class="filter-count">18</span></label>
+      <label><input type="checkbox"> Vodítka <span class="filter-count">12</span></label>
+      <label><input type="checkbox"> Opasky <span class="filter-count">8</span></label>
+      <label><input type="checkbox"> Obojky <span class="filter-count">6</span></label>
+      <label><input type="checkbox"> Bungee <span class="filter-count">4</span></label>
+    </div>
+
+    <div class="filter-group">
+      <h4>Velikost</h4>
+      <label><input type="checkbox"> XS <span class="filter-count">32</span></label>
+      <label><input type="checkbox"> S <span class="filter-count">38</span></label>
+      <label><input type="checkbox"> M <span class="filter-count">42</span></label>
+      <label><input type="checkbox"> L <span class="filter-count">40</span></label>
+      <label><input type="checkbox"> XL <span class="filter-count">28</span></label>
+    </div>
+
+    <div class="filter-group">
+      <h4>Barva</h4>
+      <label><input type="checkbox"> Červená <span class="filter-count">24</span></label>
+      <label><input type="checkbox"> Černá <span class="filter-count">38</span></label>
+      <label><input type="checkbox"> Modrá <span class="filter-count">16</span></label>
+      <label><input type="checkbox"> Zelená <span class="filter-count">12</span></label>
+      <label><input type="checkbox"> Růžová <span class="filter-count">8</span></label>
+    </div>
+
+    <div class="filter-group">
+      <h4>Cena</h4>
+      <div class="price-range">
+        <input type="number" placeholder="Od" value="200">
+        <span>—</span>
+        <input type="number" placeholder="Do" value="3000">
+      </div>
+      <button class="filter-btn">Filtrovat</button>
+    </div>
+
+    <div class="filter-group">
+      <h4>Dostupnost</h4>
+      <label><input type="checkbox" checked> Skladem <span class="filter-count">36</span></label>
+      <label><input type="checkbox"> Na objednávku <span class="filter-count">6</span></label>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main>
+    <div class="cat-header">
+      <h1>Canicross <span>(42 produktů)</span></h1>
+      <div style="display:flex;gap:16px;align-items:center">
+        <div class="cat-sort">
+          <label>Řadit:</label>
+          <select>
+            <option>Doporučené</option>
+            <option>Nejprodávanější</option>
+            <option>Nejlevnější</option>
+            <option>Nejdražší</option>
+            <option>Nejnovější</option>
+            <option>Nejlépe hodnocené</option>
+          </select>
+        </div>
+        <div class="view-toggle">
+          <button class="active" title="Mřížka">&#9638;</button>
+          <button title="Seznam">&#9776;</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-grid">
+
+      <div class="prod-card">
+        <div class="prod-img">
+          <div class="prod-badge bestseller">Bestseller</div>
+          <div class="prod-wishlist">&#9825;</div>
+          <img src="https://cdn.manmat.cz/images/0/dba8ca995780d281/2/postroj-smart-reflex-xs.jpg" alt="Postroj SMART">
+          <div class="prod-colors">
+            <span style="background:#c00"></span>
+            <span style="background:#222"></span>
+            <span style="background:#0066cc"></span>
+          </div>
+        </div>
+        <div class="prod-info">
+          <div class="prod-cat">Postroje</div>
+          <h3><a href="#">Postroj SMART</a></h3>
+          <div class="prod-stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span class="star-count">(127)</span></div>
+          <div class="prod-pricing">
+            <span class="prod-price">1 007 Kč</span>
+          </div>
+          <div class="prod-stock">&#9679; Skladem</div>
+          <button class="prod-btn">Do košíku</button>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <div class="prod-img">
+          <div class="prod-badge new">Novinka</div>
+          <div class="prod-wishlist">&#9825;</div>
+          <img src="https://cdn.manmat.cz/images/0/eaf64f3ce8b361f3/2/postroj-ergo-reflex-xs.jpg" alt="Postroj ERGO">
+          <div class="prod-colors">
+            <span style="background:#c00"></span>
+            <span style="background:#222"></span>
+          </div>
+        </div>
+        <div class="prod-info">
+          <div class="prod-cat">Postroje</div>
+          <h3><a href="#">Postroj ERGO</a></h3>
+          <div class="prod-stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span class="star-count">(89)</span></div>
+          <div class="prod-pricing">
+            <span class="prod-price">1 290 Kč</span>
+          </div>
+          <div class="prod-stock">&#9679; Skladem</div>
+          <button class="prod-btn">Do košíku</button>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <div class="prod-img">
+          <div class="prod-wishlist">&#9825;</div>
+          <img src="https://cdn.manmat.cz/images/0/64eebe45310efa5a/2/opasek-race-pro.jpg" alt="Opasek RACE PRO">
+          <div class="prod-colors">
+            <span style="background:#222"></span>
+            <span style="background:#c00"></span>
+          </div>
+        </div>
+        <div class="prod-info">
+          <div class="prod-cat">Opasky</div>
+          <h3><a href="#">Opasek RACE PRO</a></h3>
+          <div class="prod-stars">&#9733;&#9733;&#9733;&#9733;&#9734; <span class="star-count">(64)</span></div>
+          <div class="prod-pricing">
+            <span class="prod-price">890 Kč</span>
+          </div>
+          <div class="prod-stock">&#9679; Skladem</div>
+          <button class="prod-btn">Do košíku</button>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <div class="prod-img">
+          <div class="prod-badge sale">-20%</div>
+          <div class="prod-wishlist">&#9825;</div>
+          <img src="https://cdn.manmat.cz/images/0/c5c5f1b6f25a0483/2/voditko-s-amortizerem-reflex-260m.jpg" alt="Vodítko s amortizérem">
+          <div class="prod-colors">
+            <span style="background:#222"></span>
+            <span style="background:#c00"></span>
+            <span style="background:#16a34a"></span>
+          </div>
+        </div>
+        <div class="prod-info">
+          <div class="prod-cat">Vodítka</div>
+          <h3><a href="#">Vodítko s amortizérem REFLEX</a></h3>
+          <div class="prod-stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span class="star-count">(156)</span></div>
+          <div class="prod-pricing">
+            <span class="prod-price">632 Kč</span>
+            <span class="prod-price-old">790 Kč</span>
+          </div>
+          <div class="prod-stock">&#9679; Skladem</div>
+          <button class="prod-btn">Do košíku</button>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <div class="prod-img">
+          <div class="prod-wishlist">&#9825;</div>
+          <img src="https://cdn.manmat.cz/images/0/86cc51d3524ff059/2/postroj-run-long-d-l.jpg" alt="Postroj RUN LONG">
+          <div class="prod-colors">
+            <span style="background:#c00"></span>
+            <span style="background:#222"></span>
+          </div>
+        </div>
+        <div class="prod-info">
+          <div class="prod-cat">Postroje</div>
+          <h3><a href="#">Postroj RUN LONG</a></h3>
+          <div class="prod-stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span class="star-count">(203)</span></div>
+          <div class="prod-pricing">
+            <span class="prod-price">580 Kč</span>
+          </div>
+          <div class="prod-stock">&#9679; Skladem</div>
+          <button class="prod-btn">Do košíku</button>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <div class="prod-img">
+          <div class="prod-wishlist">&#9825;</div>
+          <img src="https://cdn.manmat.cz/images/0/b1cede4a5b6f6e27/2/postroj-open-trail-reflex-xs.jpg" alt="Postroj OPEN TRAIL">
+          <div class="prod-colors">
+            <span style="background:#f59e0b"></span>
+            <span style="background:#222"></span>
+            <span style="background:#c00"></span>
+          </div>
+        </div>
+        <div class="prod-info">
+          <div class="prod-cat">Postroje</div>
+          <h3><a href="#">Postroj OPEN TRAIL</a></h3>
+          <div class="prod-stars">&#9733;&#9733;&#9733;&#9733;&#9734; <span class="star-count">(47)</span></div>
+          <div class="prod-pricing">
+            <span class="prod-price">1 450 Kč</span>
+          </div>
+          <div class="prod-stock">&#9679; Skladem</div>
+          <button class="prod-btn">Do košíku</button>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <div class="prod-img">
+          <div class="prod-wishlist">&#9825;</div>
+          <img src="https://cdn.manmat.cz/images/0/c5c5f1b6f25a0483/2/voditko-s-amortizerem-reflex-260m.jpg" alt="Canicross set">
+        </div>
+        <div class="prod-info">
+          <div class="prod-cat">Sety</div>
+          <h3><a href="#">Canicross SET — postroj + opasek + vodítko</a></h3>
+          <div class="prod-stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span class="star-count">(312)</span></div>
+          <div class="prod-pricing">
+            <span class="prod-price">2 190 Kč</span>
+            <span class="prod-price-old">2 477 Kč</span>
+          </div>
+          <div class="prod-stock">&#9679; Skladem</div>
+          <button class="prod-btn">Do košíku</button>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <div class="prod-img">
+          <div class="prod-wishlist">&#9825;</div>
+          <img src="https://cdn.manmat.cz/images/0/64eebe45310efa5a/2/opasek-race-pro.jpg" alt="Opasek EASY">
+          <div class="prod-colors">
+            <span style="background:#222"></span>
+          </div>
+        </div>
+        <div class="prod-info">
+          <div class="prod-cat">Opasky</div>
+          <h3><a href="#">Opasek EASY</a></h3>
+          <div class="prod-stars">&#9733;&#9733;&#9733;&#9733;&#9734; <span class="star-count">(38)</span></div>
+          <div class="prod-pricing">
+            <span class="prod-price">590 Kč</span>
+          </div>
+          <div class="prod-stock out">&#9675; Na objednávku (3-5 dní)</div>
+          <button class="prod-btn" style="background:var(--gray)">Objednat</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="pagination">
+      <a href="#">&laquo;</a>
+      <span class="active">1</span>
+      <a href="#">2</a>
+      <a href="#">3</a>
+      <span class="dots">...</span>
+      <a href="#">5</a>
+      <a href="#">&raquo;</a>
+    </div>
+
+  </main>
+</div>
+
+<footer>
+  <div class="foot-inner">
+    <div class="foot-col">
+      <h4>Nákup</h4>
+      <a href="#">Doprava a platba</a>
+      <a href="#">Vrácení zboží</a>
+      <a href="#">Reklamace</a>
+      <a href="#">Jak vybrat velikost</a>
+    </div>
+    <div class="foot-col">
+      <h4>O ManMat</h4>
+      <a href="#">Náš příběh</a>
+      <a href="#">Výroba</a>
+      <a href="#">Ambasadoři</a>
+      <a href="#">Kontakt</a>
+    </div>
+    <div class="foot-col">
+      <h4>Pro firmy</h4>
+      <a href="#">B2B velkoobchod</a>
+      <a href="#">Distributoři</a>
+      <a href="#">Spolupráce</a>
+    </div>
+    <div class="foot-col">
+      <h4>Kontakt</h4>
+      <a href="#">info@manmat.cz</a>
+      <a href="#">+420 491 541 023</a>
+      <a href="#">Police nad Metují</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; 2026 ManMat s.r.o. Všechna práva vyhrazena.</span>
+    <span>Obchodní podmínky | Ochrana osobních údajů</span>
+  </div>
+</footer>
+
+</body>
+</html>
