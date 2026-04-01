@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="g4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F48FB1"/>
+      <stop offset="100%" style="stop-color:#E8577D"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="110" fill="url(#g4)"/>
+  <!-- Circular ring - cycle symbol -->
+  <circle cx="256" cy="236" r="110" fill="none" stroke="white" stroke-width="18" opacity="0.9"/>
+  <!-- Current day marker -->
+  <circle cx="256" cy="126" r="16" fill="white"/>
+  <!-- Inner soft glow -->
+  <circle cx="256" cy="236" r="50" fill="white" opacity="0.15"/>
+  <!-- M letter stylized -->
+  <text x="256" y="425" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif" font-weight="300" font-size="36" fill="white" opacity="0.9" letter-spacing="8">MujCyklus</text>
+</svg>
