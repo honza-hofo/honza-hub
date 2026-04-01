@@ -56,6 +56,12 @@ button{font-family:inherit;cursor:pointer}
 .mega-col a{display:block;font-size:13px;color:var(--text);padding:5px 0;font-weight:500;transition:color .15s;text-decoration:none}
 .mega-col a:hover{color:var(--red)}
 .mega-img{display:flex;flex-direction:column;align-items:center;min-width:160px;padding-left:16px;border-left:1px solid var(--border-light)}
+.mega-top{display:flex;gap:8px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border-light);width:100%}
+.mega-top a{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:700;text-decoration:none;transition:all .2s}
+.mega-top .mega-set{background:var(--red);color:#fff}
+.mega-top .mega-set:hover{opacity:.9}
+.mega-top .mega-pack{background:var(--bg-alt,#f5f5f5);color:var(--text);border:1px solid var(--border)}
+.mega-top .mega-pack:hover{border-color:var(--red);color:var(--red)}
 .nav-dropdown{display:none;position:absolute;left:0;right:0;top:100%;background:#fff;border-bottom:1px solid var(--border);box-shadow:0 8px 24px rgba(0,0,0,0.08);padding:20px 60px;z-index:999}
 .nav-dropdown.open{display:flex;gap:12px;flex-wrap:wrap}
 .nav-dropdown a{padding:12px 20px;background:var(--bg-alt);border:1px solid var(--border);border-radius:10px;font-size:13px;font-weight:600;color:var(--text);transition:all .2s;display:flex;align-items:center;gap:8px}
@@ -321,7 +327,12 @@ footer a:hover{color:var(--red)}
   <div class="nav-cats">
     <div class="nav-cat-wrap">
       <a href="#">&#128054; Pro psy <span style="font-size:9px;margin-left:2px">&#9660;</span></a>
-      <div class="mega-menu">
+      <div class="mega-menu" style="flex-wrap:wrap">
+        <div class="mega-top">
+          <a href="manmat-konfigurator.html" class="mega-set">&#10024; Sestavte si vlastní SET</a>
+          <a href="#" class="mega-pack">&#128230; Canicross START balíček — 1 890 Kč</a>
+          <a href="#" class="mega-pack">&#128230; Canicross PRO balíček — 2 990 Kč</a>
+        </div>
         <div class="mega-col">
           <h4>Dle aktivity</h4>
           <a href="manmat-kategorie.html">Canicross</a>
@@ -355,7 +366,11 @@ footer a:hover{color:var(--red)}
     </div>
     <div class="nav-cat-wrap">
       <a href="#">&#128014; Pro koně <span style="font-size:9px;margin-left:2px">&#9660;</span></a>
-      <div class="mega-menu">
+      <div class="mega-menu" style="flex-wrap:wrap">
+        <div class="mega-top">
+          <a href="manmat-konfigurator.html" class="mega-set">&#10024; Sestavte si vlastní SET</a>
+          <a href="#" class="mega-pack">&#128230; Koňský balíček BASIC — 2 490 Kč</a>
+        </div>
         <div class="mega-col">
           <h4>Produkty</h4>
           <a href="#">Postroje</a>
@@ -374,7 +389,11 @@ footer a:hover{color:var(--red)}
     </div>
     <div class="nav-cat-wrap">
       <a href="#">&#128694; Pro lidi <span style="font-size:9px;margin-left:2px">&#9660;</span></a>
-      <div class="mega-menu">
+      <div class="mega-menu" style="flex-wrap:wrap">
+        <div class="mega-top">
+          <a href="manmat-konfigurator.html" class="mega-set">&#10024; Sestavte si vlastní SET</a>
+          <a href="#" class="mega-pack">&#128230; Runner balíček — 1 590 Kč</a>
+        </div>
         <div class="mega-col">
           <h4>Vybavení</h4>
           <a href="#">Opasky</a>
