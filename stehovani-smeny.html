@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Směny – Stěhování Formánek</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f7fa; color: #333; padding: 20px; }
+h1 { text-align: center; color: #00A3B7; margin-bottom: 5px; font-size: 1.6rem; }
+.subtitle { text-align: center; color: #888; margin-bottom: 20px; font-size: 0.9rem; }
+
+.week-nav { display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 20px; }
+.week-nav button { background: #00A3B7; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 0.9rem; }
+.week-nav button:hover { background: #008a9a; }
+.week-nav span { font-weight: 700; font-size: 1.1rem; }
+
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+th { background: #00A3B7; color: #fff; padding: 10px 8px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
+td { padding: 8px; text-align: center; border-bottom: 1px solid #f0f0f0; font-size: 0.85rem; }
+tr:hover { background: #f8fffe; }
+
+.name-cell { text-align: left; font-weight: 600; white-space: nowrap; min-width: 130px; }
+.name-cell input { border: none; background: transparent; font-weight: 600; font-size: 0.85rem; width: 120px; }
+.name-cell input:focus { background: #f0f7f0; outline: 1px solid #00A3B7; border-radius: 3px; }
+
+.rate-cell { color: #888; font-size: 0.8rem; }
+.rate-input { width: 50px; border: 1px solid #e5e7eb; border-radius: 4px; text-align: center; padding: 3px; font-size: 0.8rem; }
+
+.hour-input { width: 45px; border: 1px solid #e5e7eb; border-radius: 4px; text-align: center; padding: 4px; font-size: 0.85rem; }
+.hour-input:focus { outline: 2px solid #00A3B7; border-color: #00A3B7; }
+.hour-input.has-value { background: #f0f7f0; font-weight: 600; }
+.disabled-cell { background: #f5f5f5; color: #ddd; }
+
+.adv-input { width: 60px; border: 1px solid #ffe0b2; border-radius: 4px; text-align: center; padding: 4px; font-size: 0.8rem; background: #fff8f0; }
+.adv-input.has-value { background: #fff3e0; font-weight: 600; color: #e65100; }
+
+.total-cell { font-weight: 700; color: #00A3B7; }
+.earned-cell { font-weight: 600; }
+.topay-cell { font-weight: 700; font-size: 0.95rem; }
+.topay-cell.positive { color: #2e7d32; }
+.topay-cell.zero { color: #888; }
+.topay-cell.negative { color: #c62828; }
+
+.paid-btn { padding: 4px 10px; border-radius: 4px; border: none; cursor: pointer; font-size: 0.8rem; font-weight: 600; }
+.paid-btn.unpaid { background: #ffcdd2; color: #c62828; }
+.paid-btn.paid { background: #c8e6c9; color: #2e7d32; }
+
+.summary-row td { background: #f8f9fa; font-weight: 700; border-top: 2px solid #00A3B7; }
+
+.day-header { font-size: 0.7rem; display: block; color: rgba(255,255,255,0.7); }
+
+/* Detail panel */
+.name-link { cursor: pointer; color: #00A3B7; text-decoration: underline; font-weight: 700; font-size: 0.85rem; }
+.name-link:hover { color: #008a9a; }
+
+.detail-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 100; }
+.detail-overlay.active { display: flex; align-items: center; justify-content: center; }
+
+.detail-panel { background: #fff; border-radius: 12px; padding: 30px; width: 450px; max-width: 95vw; box-shadow: 0 10px 40px rgba(0,0,0,0.2); position: relative; max-height: 90vh; overflow-y: auto; }
+.detail-panel h2 { color: #00A3B7; margin-bottom: 5px; font-size: 1.3rem; }
+.detail-panel .detail-rate { color: #888; margin-bottom: 20px; font-size: 0.9rem; }
+.detail-panel .detail-contract { display: inline-block; background: #e6f7f9; color: #00A3B7; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; margin-left: 8px; }
+
+.detail-close { position: absolute; top: 12px; right: 16px; font-size: 1.5rem; cursor: pointer; color: #888; background: none; border: none; }
+.detail-close:hover { color: #333; }
+
+.detail-field { margin-bottom: 14px; }
+.detail-field label { display: block; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.detail-field input { width: 100%; padding: 8px 12px; border: 2px solid #e5e7eb; border-radius: 6px; font-size: 0.9rem; font-family: inherit; }
+.detail-field input:focus { outline: none; border-color: #00A3B7; }
+.detail-field .value-display { font-size: 0.95rem; font-weight: 500; color: #333; }
+.detail-field .empty { color: #ccc; font-style: italic; }
+
+.detail-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.detail-save { background: #00A3B7; color: #fff; border: none; padding: 10px 24px; border-radius: 6px; font-size: 0.9rem; font-weight: 600; cursor: pointer; margin-top: 10px; width: 100%; }
+.detail-save:hover { background: #008a9a; }
+</style>
+</head>
+<body>
+
+<h1>📋 Směny & Výplaty</h1>
+<p class="subtitle">Stěhování Formánek</p>
+
+<div class="week-nav">
+    <button onclick="prevWeek()">◀ Minulý</button>
+    <span id="weekLabel"></span>
+    <button onclick="nextWeek()">Další ▶</button>
+</div>
+
+<div class="table-wrap">
+    <table id="mainTable">
+        <thead id="thead"></thead>
+        <tbody id="tbody"></tbody>
+    </table>
+</div>
+
+<h2 style="color:#00A3B7;margin-top:30px;margin-bottom:10px;font-size:1.2rem;">💰 Klient – Příjmy za týden</h2>
+<div class="table-wrap">
+    <table style="width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.08);">
+        <thead><tr>
+            <th style="background:#e65100;text-align:left;padding:10px;">Den</th>
+            <th style="background:#e65100;">Kamiony</th>
+            <th style="background:#e65100;">Lidí</th>
+            <th style="background:#e65100;">Částka od klienta</th>
+            <th style="background:#e65100;">Poznámka</th>
+        </tr></thead>
+        <tbody id="clientBody"></tbody>
+    </table>
+</div>
+
+<h2 style="color:#00A3B7;margin-top:30px;margin-bottom:10px;font-size:1.2rem;">🔧 Montáže za týden</h2>
+<div class="table-wrap">
+    <table style="width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.08);">
+        <thead><tr>
+            <th style="background:#2e7d32;text-align:left;padding:10px;">Den</th>
+            <th style="background:#2e7d32;">Postel<br><span style="font-size:0.6rem;">150 Kč</span></th>
+            <th style="background:#2e7d32;">Šatní skříň<br><span style="font-size:0.6rem;">150 Kč</span></th>
+            <th style="background:#2e7d32;">Skříň s nikou<br><span style="font-size:0.6rem;">100 Kč</span></th>
+            <th style="background:#2e7d32;">Stůl<br><span style="font-size:0.6rem;">100 Kč</span></th>
+            <th style="background:#2e7d32;">Kontejner<br><span style="font-size:0.6rem;">50 Kč</span></th>
+            <th style="background:#2e7d32;">Celkem Kč</th>
+        </tr></thead>
+        <tbody id="montazBody"></tbody>
+    </table>
+</div>
+
+<!-- Detail panel -->
+<div class="detail-overlay" id="detailOverlay" onclick="if(event.target===this)closeDetail()">
+    <div class="detail-panel" id="detailPanel"></div>
+</div>
+
+<script>
+const API = '';
+const DAYS = ['Po','Út','St','Čt','Pá'];
+const START = '2026-04-13';
+
+let currentFriday = getStartFriday();
+let DATA = null;
+
+function fmtDate(d) {
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+function getStartFriday() {
+    // First Friday >= START
+    const d = new Date(START + 'T12:00:00');
+    while (d.getDay() !== 5) d.setDate(d.getDate() + 1);
+    return fmtDate(d);
+}
+
+function parseFriday(s) { return new Date(s + 'T12:00:00'); }
+
+function prevWeek() {
+    const d = parseFriday(currentFriday);
+    d.setDate(d.getDate() - 7);
+    if (fmtDate(d) >= '2026-04-11') { currentFriday = fmtDate(d); render(); }
+}
+
+function nextWeek() {
+    const d = parseFriday(currentFriday);
+    d.setDate(d.getDate() + 7);
+    if (fmtDate(d) <= '2026-06-06') { currentFriday = fmtDate(d); render(); }
+}
+
+function getWeekDates(friday) {
+    const fri = parseFriday(friday);
+    const dates = [];
+    for (let i = 4; i >= 0; i--) {
+        const d = new Date(fri);
+        d.setDate(fri.getDate() - i);
+        dates.push(fmtDate(d));
+    }
+    return dates;
+}
+
+async function loadData() {
+    const r = await fetch(API + '/api/data');
+    DATA = await r.json();
+}
+
+async function render() {
+    if (!DATA) await loadData();
+    const dates = getWeekDates(currentFriday);
+    const fri = parseFriday(currentFriday);
+    const mon = new Date(dates[0] + 'T12:00:00');
+
+    document.getElementById('weekLabel').textContent =
+        mon.getDate() + '.' + (mon.getMonth()+1) + '. – ' + fri.getDate() + '.' + (fri.getMonth()+1) + '.' + fri.getFullYear();
+
+    // Header
+    let th = '<tr><th>Jméno</th><th>Kč/h</th>';
+    dates.forEach((d, i) => {
+        const dt = new Date(d + 'T12:00:00');
+        th += `<th>${DAYS[i]}<span class="day-header">${dt.getDate()}.${dt.getMonth()+1}.</span></th>`;
+    });
+    th += '<th>Σ hod</th><th>Zálohy</th><th>Výdělek</th><th>K výplatě</th><th>Stav</th></tr>';
+    document.getElementById('thead').innerHTML = th;
+
+    // Body
+    let html = '';
+    let sumHours = 0, sumEarned = 0, sumAdv = 0, sumPay = 0;
+
+    for (const w of DATA.workers) {
+        const wid = String(w.id);
+        const lastDay = w.lastDay || null;
+        let totalH = 0, totalAdv = 0;
+
+        // Skip workers that ended before this week
+        const weekStart = dates[0];
+        const firstShiftDay = Object.keys(DATA.shifts).filter(d => DATA.shifts[d][wid]).sort()[0];
+        if (lastDay && lastDay < weekStart && firstShiftDay && firstShiftDay < weekStart) continue;
+
+        html += '<tr>';
+        html += `<td class="name-cell"><span class="name-link" onclick="openDetail(${w.id})">${w.name}</span></td>`;
+        html += `<td class="rate-cell">${w.rate} Kč</td>`;
+
+        dates.forEach(d => {
+            const shift = (DATA.shifts[d] || {})[wid] || {};
+            const h = shift.hours || 0;
+            totalH += h;
+            if (lastDay && d > lastDay) {
+                html += `<td class="disabled-cell">–</td>`;
+            } else {
+                const cls = h > 0 ? 'hour-input has-value' : 'hour-input';
+                html += `<td><input class="${cls}" type="number" min="0" max="24" step="0.5" value="${h || ''}"
+                    onchange="updateShift('${d}',${w.id},this.value)" placeholder="–"></td>`;
+            }
+        });
+
+        // Zálohy za tento týden
+        dates.forEach(d => {
+            const adv = (DATA.advances[d] || {})[wid];
+            if (adv) totalAdv += adv.amount || 0;
+        });
+
+        const earned = totalH * w.rate;
+        const toPay = earned - totalAdv;
+
+        // Payout stav pro tento pátek
+        const payout = (DATA.payouts[currentFriday] || {})[wid] || {};
+
+        const advCls = totalAdv > 0 ? 'adv-input has-value' : 'adv-input';
+        html += `<td class="total-cell">${totalH > 0 ? totalH + 'h' : '–'}</td>`;
+        html += `<td><input class="${advCls}" type="number" min="0" step="100" value="${totalAdv || ''}"
+            onchange="updateAdvance('${currentFriday}',${w.id},parseInt(this.value)||0)" placeholder="–"></td>`;
+        html += `<td class="earned-cell">${earned > 0 ? earned.toLocaleString('cs') + ' Kč' : '–'}</td>`;
+
+        const displayPay = payout.paid ? 0 : toPay;
+        const payClass = displayPay > 0 ? 'positive' : (displayPay === 0 ? 'zero' : 'negative');
+        html += `<td class="topay-cell ${payClass}">${earned > 0 ? (payout.paid ? '✓ 0 Kč' : toPay.toLocaleString('cs') + ' Kč') : '–'}</td>`;
+
+        const paidClass = payout.paid ? 'paid' : 'unpaid';
+        const paidText = payout.paid ? '✓ Vyplaceno' : 'Nevyplaceno';
+        if (earned > 0) {
+            html += `<td><button class="paid-btn ${paidClass}" onclick="togglePaid('${currentFriday}',${w.id},${!payout.paid},${toPay})">${paidText}</button></td>`;
+        } else {
+            html += `<td>–</td>`;
+        }
+        html += '</tr>';
+
+        sumHours += totalH;
+        sumEarned += earned;
+        sumAdv += totalAdv;
+        sumPay += toPay;
+    }
+
+    // Summary row
+    html += `<tr class="summary-row">
+        <td colspan="2" style="text-align:right;font-weight:700;">CELKEM</td>`;
+    dates.forEach(() => { html += '<td></td>'; });
+    html += `<td class="total-cell">${sumHours}h</td>`;
+    html += `<td>${sumAdv > 0 ? sumAdv.toLocaleString('cs') + ' Kč' : '–'}</td>`;
+    html += `<td class="earned-cell">${sumEarned.toLocaleString('cs')} Kč</td>`;
+    html += `<td class="topay-cell ${sumPay >= 0 ? 'positive' : 'negative'}">${sumPay.toLocaleString('cs')} Kč</td>`;
+    html += `<td></td></tr>`;
+
+    document.getElementById('tbody').innerHTML = html;
+
+    // === CLIENT TABLE ===
+    const clients = DATA.clients || {};
+    let chtml = '';
+    let totalIncome = 0, totalTrucks = 0;
+    dates.forEach((d, i) => {
+        const dt = new Date(d + 'T12:00:00');
+        const dayLabel = DAYS[i] + ' ' + dt.getDate() + '.' + (dt.getMonth()+1) + '.';
+        const cl = clients[d] || {};
+        const amt = cl.amount || 0;
+        const trucks = cl.trucks || 0;
+        const workers = cl.workers || 0;
+        const note = cl.note || '';
+        totalIncome += amt;
+        totalTrucks += trucks;
+        chtml += `<tr>
+            <td style="text-align:left;padding:8px;font-weight:600;">${dayLabel}</td>
+            <td><input class="hour-input" type="number" min="0" max="10" value="${trucks || ''}" placeholder="–"
+                onchange="updateClient('${d}','trucks',parseInt(this.value)||0)" style="width:45px;"></td>
+            <td><input class="hour-input" type="number" min="0" max="20" value="${workers || ''}" placeholder="–"
+                onchange="updateClient('${d}','workers',parseInt(this.value)||0)" style="width:45px;"></td>
+            <td><input class="adv-input" type="number" min="0" step="500" value="${amt || ''}" placeholder="–"
+                onchange="updateClient('${d}','amount',parseInt(this.value)||0)" style="width:90px;"> Kč</td>
+            <td><input style="border:1px solid #e5e7eb;border-radius:4px;padding:4px 8px;font-size:0.8rem;width:200px;"
+                value="${note}" onchange="updateClient('${d}','note',this.value)" placeholder="Popis zakázky..."></td>
+        </tr>`;
+    });
+    // Summary
+    const profit = totalIncome - sumEarned;
+    const profitClass = profit >= 0 ? 'positive' : 'negative';
+    chtml += `<tr class="summary-row">
+        <td style="text-align:left;padding:8px;"><strong>CELKEM</strong></td>
+        <td><strong>${totalTrucks}</strong></td>
+        <td></td>
+        <td><strong>${totalIncome > 0 ? totalIncome.toLocaleString('cs') + ' Kč' : '–'}</strong></td>
+        <td style="text-align:left;font-size:0.8rem;">
+            Kamiony: ${(totalTrucks * 8000).toLocaleString('cs')} Kč |
+            Mzdy: ${sumEarned.toLocaleString('cs')} Kč |
+            <strong class="topay-cell ${profitClass}">Zisk: ${profit.toLocaleString('cs')} Kč</strong>
+        </td>
+    </tr>`;
+    document.getElementById('clientBody').innerHTML = chtml;
+
+    // === MONTÁŽE TABLE ===
+    const montaze = DATA.montaze || {};
+    const items = [
+        {key:'postel', price:150},
+        {key:'skrin_satni', price:150},
+        {key:'skrin_nika', price:100},
+        {key:'stul', price:100},
+        {key:'kontejner', price:50},
+    ];
+    let mhtml = '';
+    let montazTotal = 0;
+    dates.forEach((d, i) => {
+        const dt = new Date(d + 'T12:00:00');
+        const dayLabel = DAYS[i] + ' ' + dt.getDate() + '.' + (dt.getMonth()+1) + '.';
+        const md = montaze[d] || {};
+        let dayTotal = 0;
+        mhtml += `<tr><td style="text-align:left;padding:8px;font-weight:600;">${dayLabel}</td>`;
+        items.forEach(item => {
+            const count = md[item.key] || 0;
+            dayTotal += count * item.price;
+            mhtml += `<td><input class="hour-input" type="number" min="0" value="${count || ''}" placeholder="–"
+                onchange="updateMontaz('${d}','${item.key}',parseInt(this.value)||0)" style="width:50px;"></td>`;
+        });
+        montazTotal += dayTotal;
+        mhtml += `<td style="font-weight:600;">${dayTotal > 0 ? dayTotal.toLocaleString('cs') + ' Kč' : '–'}</td></tr>`;
+    });
+    // Summary
+    mhtml += `<tr class="summary-row">
+        <td style="text-align:left;padding:8px;"><strong>CELKEM</strong></td>`;
+    items.forEach(item => {
+        let itemTotal = 0;
+        dates.forEach(d => { itemTotal += (montaze[d]||{})[item.key] || 0; });
+        mhtml += `<td><strong>${itemTotal || '–'}</strong></td>`;
+    });
+    mhtml += `<td><strong>${montazTotal.toLocaleString('cs')} Kč</strong></td></tr>`;
+
+    // Grand total row
+    const grandIncome = totalIncome + montazTotal;
+    const grandProfit = grandIncome - sumEarned;
+    const gpClass = grandProfit >= 0 ? 'positive' : 'negative';
+    mhtml += `<tr style="background:#e8f5e9;">
+        <td colspan="6" style="text-align:right;padding:8px;font-weight:700;">CELKOVÝ PŘÍJEM (kamiony + montáže):</td>
+        <td style="font-weight:700;font-size:1rem;">${grandIncome.toLocaleString('cs')} Kč</td>
+    </tr>
+    <tr style="background:#e8f5e9;">
+        <td colspan="6" style="text-align:right;padding:8px;font-weight:700;">ZISK (příjmy − mzdy):</td>
+        <td class="topay-cell ${gpClass}" style="font-size:1.1rem;">${grandProfit.toLocaleString('cs')} Kč</td>
+    </tr>`;
+
+    document.getElementById('montazBody').innerHTML = mhtml;
+}
+
+async function updateClient(date, field, value) {
+    const clients = DATA.clients || {};
+    if (!clients[date]) clients[date] = {};
+    clients[date][field] = value;
+    DATA.clients = clients;
+    await fetch(API + '/api/client', { method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ date, ...clients[date] }) });
+    render();
+}
+
+async function updateWorker(id, field, value) {
+    const body = { id };
+    body[field] = value;
+    await fetch(API + '/api/worker', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) });
+    const w = DATA.workers.find(w => w.id === id);
+    if (w) w[field] = value;
+    render();
+}
+
+async function updateShift(date, workerId, value) {
+    const hours = parseFloat(value) || 0;
+    await fetch(API + '/api/shift', { method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ date, worker_id: workerId, hours }) });
+    if (!DATA.shifts[date]) DATA.shifts[date] = {};
+    DATA.shifts[date][String(workerId)] = { hours };
+    render();
+}
+
+async function updateAdvance(friday, workerId, amount) {
+    await fetch(API + '/api/advance', { method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ date: friday, worker_id: workerId, amount }) });
+    if (!DATA.advances[friday]) DATA.advances[friday] = {};
+    DATA.advances[friday][String(workerId)] = { amount };
+    render();
+}
+
+async function togglePaid(friday, workerId, paid, amount) {
+    await fetch(API + '/api/payout', { method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ date: friday, worker_id: workerId, paid, amount }) });
+    if (!DATA.payouts[friday]) DATA.payouts[friday] = {};
+    DATA.payouts[friday][String(workerId)] = { paid, amount };
+    render();
+}
+
+// === DETAIL PANEL ===
+function openDetail(id) {
+    const w = DATA.workers.find(w => w.id === id);
+    if (!w) return;
+    const ct = w.contractType === 'faktura' ? '<span class="detail-contract">FAKTURA</span>' : '<span class="detail-contract">DPP</span>';
+    const f = (key, label) => {
+        const val = w[key] || '';
+        return `<div class="detail-field">
+            <label>${label}</label>
+            <input value="${val}" onchange="saveWorkerField(${id},'${key}',this.value)" placeholder="Doplnit...">
+        </div>`;
+    };
+    document.getElementById('detailPanel').innerHTML = `
+        <button class="detail-close" onclick="closeDetail()">&times;</button>
+        <h2>${w.name} ${ct}</h2>
+        <p class="detail-rate">Sazba: ${w.rate} Kč/hod</p>
+        <div class="detail-row">
+            ${f('phone', '📞 Telefon')}
+            ${f('email', '📧 Email')}
+        </div>
+        ${f('address', '📍 Adresa')}
+        <div class="detail-row">
+            ${f('birthId', '🆔 Rodné číslo')}
+            ${f('birthDate', '🎂 Datum narození')}
+        </div>
+        ${f('bankAccount', '🏦 Číslo účtu')}
+        <div class="detail-row">
+            ${f('rate', '💰 Sazba (Kč/hod)')}
+            ${f('contractType', '📄 Typ (dpp/faktura)')}
+        </div>
+        ${f('note', '📝 Poznámka')}
+        ${w.lastDay ? '<p style="color:#c62828;margin-top:10px;font-size:0.85rem;">⛔ Ukončen k ' + w.lastDay + '</p>' : ''}
+        ${w.contractType !== 'faktura' ? '<button class="detail-save" onclick="generateContract('+w.id+')">📄 Generovat smlouvu</button>' : '<p style="margin-top:10px;color:#888;font-size:0.85rem;">Faktura - smlouva se negeneruje</p>'}
+    `;
+    document.getElementById('detailOverlay').classList.add('active');
+}
+
+function closeDetail() {
+    document.getElementById('detailOverlay').classList.remove('active');
+}
+
+async function saveWorkerField(id, field, value) {
+    const w = DATA.workers.find(w => w.id === id);
+    if (w) {
+        if (field === 'rate') value = parseInt(value) || w.rate;
+        w[field] = value;
+    }
+    await fetch(API + '/api/worker', { method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ id, [field]: value }) });
+}
+
+async function updateMontaz(date, item, count) {
+    if (!DATA.montaze) DATA.montaze = {};
+    if (!DATA.montaze[date]) DATA.montaze[date] = {};
+    DATA.montaze[date][item] = count;
+    await fetch(API + '/api/montaz', { method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ date, item, count }) });
+    render();
+}
+
+function generateContract(id) {
+    const w = DATA.workers.find(w => w.id === id);
+    if (!w) return;
+    // Find first shift date as start date
+    let startDate = '';
+    for (const d of Object.keys(DATA.shifts).sort()) {
+        if (DATA.shifts[d][String(w.id)]) { startDate = d; break; }
+    }
+    if (startDate) {
+        const dt = new Date(startDate + 'T12:00:00');
+        startDate = dt.getDate() + '. ' + (dt.getMonth()+1) + '. ' + dt.getFullYear();
+    }
+    const params = new URLSearchParams({
+        name: w.name || '',
+        birthId: w.birthId || '',
+        birthDate: w.birthDate || '',
+        address: w.address || '',
+        phone: w.phone || '',
+        bankAccount: w.bankAccount || '',
+        rate: w.rate || '',
+        startDate: startDate,
+    });
+    window.open('smlouva-template.html?' + params.toString(), '_blank');
+}
+
+render();
+</script>
+</body>
+</html>

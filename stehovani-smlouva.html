@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<title>Smlouva o dílo</title>
+<style>
+@media print { body { margin: 0; } .no-print { display: none; } }
+body { font-family: 'Times New Roman', serif; max-width: 700px; margin: 30px auto; padding: 20px; font-size: 14px; line-height: 1.6; color: #222; }
+h1 { text-align: center; font-size: 18px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; }
+h2 { font-size: 14px; margin-top: 25px; margin-bottom: 8px; }
+.center { text-align: center; }
+.subtitle { text-align: center; font-size: 12px; color: #555; margin-bottom: 30px; }
+.party { margin: 15px 0; }
+.party strong { font-size: 14px; }
+.indent { margin-left: 30px; }
+.article { margin-top: 20px; }
+.article-title { font-weight: bold; text-transform: uppercase; margin-bottom: 8px; }
+ol { margin-left: 20px; }
+ol li { margin-bottom: 6px; }
+.signatures { display: flex; justify-content: space-between; margin-top: 60px; }
+.sig-block { width: 45%; text-align: center; }
+.sig-line { border-top: 1px solid #333; margin-top: 60px; padding-top: 5px; font-size: 12px; }
+.highlight { background: #ffffcc; padding: 0 3px; }
+.no-print { text-align: center; margin-bottom: 20px; }
+.no-print button { background: #00A3B7; color: #fff; border: none; padding: 10px 24px; border-radius: 6px; font-size: 14px; cursor: pointer; margin: 0 5px; }
+.no-print button:hover { background: #008a9a; }
+</style>
+</head>
+<body>
+
+<div class="no-print">
+    <button onclick="window.print()">🖨️ Tisknout / Uložit PDF</button>
+    <button onclick="window.close()">✕ Zavřít</button>
+</div>
+
+<h1>Smlouva o dílo</h1>
+<p class="subtitle">na stěhovací a montážní služby</p>
+<p class="center" style="font-size:12px;">uzavřená podle § 2586 a násl. Občanského zákoníku v platném znění</p>
+
+<div class="party">
+    <strong>Objednatel:</strong><br>
+    <div class="indent">
+        <strong>Hops s.r.o.</strong><br>
+        Sídlo: Nademlejnská 600/1, Hloubětín, 198 00 Praha 9<br>
+        IČ: 22035915<br>
+        DIČ: CZ22035915<br>
+        Zastoupený: Janem Formánkem – jednatelem<br>
+        Kontaktní osoba: Jan Formánek, tel.: 737 060 454<br>
+        E-mail: stehovaniformanek@gmail.com<br>
+        (dále jen „<strong>objednatel</strong>")
+    </div>
+</div>
+
+<p class="center">a</p>
+
+<div class="party">
+    <strong>Zhotovitel:</strong><br>
+    <div class="indent">
+        Jméno a příjmení: <strong class="highlight" id="workerName">_______________</strong><br>
+        Datum narození / RČ: <span class="highlight" id="workerBirthId">_______________</span><br>
+        Trvalé bydliště: <span class="highlight" id="workerAddress">_______________</span><br>
+        Telefon: <span class="highlight" id="workerPhone">_______________</span><br>
+        Číslo účtu: <span class="highlight" id="workerBank">_______________</span><br>
+        (dále jen „<strong>zhotovitel</strong>")
+    </div>
+</div>
+
+<p>Smluvní strany, vědomy si svých závazků v této Smlouvě obsažených a s úmyslem být touto Smlouvou vázány, dohodly se na následujícím znění Smlouvy:</p>
+
+<div class="article">
+    <h2>1. Předmět a účel smlouvy</h2>
+    <ol>
+        <li>Předmětem Smlouvy je ujednání mezi Objednatelem a Zhotovitelem, které upravuje podmínky provádění stěhovacích a montážních prací pro Objednatele.</li>
+        <li>Zhotovitel se zavazuje provádět pro Objednatele následující činnosti:
+            <ol type="a">
+                <li>stěhovací práce – složení nábytku z nákladního automobilu, přenos a rozmístění do určených místností;</li>
+                <li>montážní práce – sestavení a montáž dodaného nábytku (postele, skříně, stoly, kontejnery a další) dle pokynů Objednatele;</li>
+                <li>další pomocné práce dle pokynů Objednatele související se stěhováním a montáží.</li>
+            </ol>
+        </li>
+        <li>Místem plnění jsou lokality určené Objednatelem, zejména v Praze a okolí.</li>
+    </ol>
+</div>
+
+<div class="article">
+    <h2>2. Odměna a platební podmínky</h2>
+    <ol>
+        <li>Odměna Zhotovitele za provedenou práci činí <strong class="highlight" id="workerRate">___</strong> Kč (slovy: <span class="highlight" id="workerRateWords">___</span>) za každou odpracovanou hodinu.</li>
+        <li>Odměna bude vyplácena pravidelně, vždy v pátek za příslušný pracovní týden (pondělí–pátek), a to převodem na bankovní účet Zhotovitele uvedený v záhlaví této Smlouvy, případně v hotovosti po vzájemné dohodě.</li>
+        <li>Objednatel je oprávněn poskytnout Zhotoviteli zálohu na odměnu. Záloha bude odečtena od nejbližší výplaty odměny.</li>
+        <li>Pracovní doba a počet odpracovaných hodin budou evidovány Objednatelem. Zhotovitel je povinen potvrdit odpracované hodiny svým podpisem na docházkovém listu nebo jiným způsobem stanoveným Objednatelem.</li>
+    </ol>
+</div>
+
+<div class="article">
+    <h2>3. Doba trvání smlouvy</h2>
+    <ol>
+        <li>Smlouva se uzavírá na dobu určitou, a to od <span class="highlight" id="startDate">___</span> do <strong>31. 5. 2026</strong>, není-li ukončena dříve dle článku 7 této Smlouvy.</li>
+        <li>Pracovní dny a hodiny budou stanoveny Objednatelem s přihlédnutím k aktuálním potřebám zakázky, zpravidla v pracovních dnech (pondělí–pátek).</li>
+    </ol>
+</div>
+
+<div class="article">
+    <h2>4. Povinnosti zhotovitele</h2>
+    <ol>
+        <li>Zhotovitel je povinen provádět sjednanou práci řádně, včas a s odbornou péčí.</li>
+        <li>Zhotovitel je povinen dbát pokynů Objednatele a koordinátora na místě plnění.</li>
+        <li>Zhotovitel je povinen dodržovat bezpečnostní předpisy a pravidla BOZP na pracovišti.</li>
+        <li>Zhotovitel odpovídá za škodu způsobenou Objednateli nebo třetím osobám při plnění této Smlouvy.</li>
+        <li>Zhotovitel je povinen zachovávat mlčenlivost o všech skutečnostech, které se dozví v souvislosti s plněním této Smlouvy.</li>
+        <li>Zhotovitel se zavazuje dostavit se na místo plnění v čase stanoveném Objednatelem. V případě nedodržení dohodnutého času je Objednatel oprávněn uplatnit smluvní pokutu ve výši 500 Kč za každou započatou hodinu zpoždění.</li>
+    </ol>
+</div>
+
+<div class="article">
+    <h2>5. Povinnosti objednatele</h2>
+    <ol>
+        <li>Objednatel je povinen poskytnout Zhotoviteli potřebné nástroje a vybavení pro výkon práce, není-li dohodnuto jinak.</li>
+        <li>Objednatel je povinen vyplatit Zhotoviteli odměnu řádně a včas dle článku 2 této Smlouvy.</li>
+        <li>Objednatel je povinen zajistit bezpečné pracovní podmínky na pracovišti.</li>
+    </ol>
+</div>
+
+<div class="article">
+    <h2>6. Odpovědnost za škodu</h2>
+    <ol>
+        <li>Zhotovitel odpovídá v plném rozsahu za případnou škodu způsobenou Objednateli nebo třetí osobě v důsledku vadného plnění nebo nedbalosti při výkonu práce.</li>
+        <li>V případě poškození přepravovaného nebo montovaného zboží je Zhotovitel povinen neprodleně informovat Objednatele a koordinátora na místě.</li>
+    </ol>
+</div>
+
+<div class="article">
+    <h2>7. Ukončení smlouvy</h2>
+    <ol>
+        <li>Smlouva zaniká uplynutím sjednané doby, splněním předmětu Smlouvy nebo dohodou smluvních stran.</li>
+        <li>Každá ze smluvních stran může Smlouvu vypovědět i bez udání důvodu s okamžitou účinností. V takovém případě má Zhotovitel nárok na odměnu za práci provedenou do dne ukončení Smlouvy.</li>
+    </ol>
+</div>
+
+<div class="article">
+    <h2>8. Závěrečná ustanovení</h2>
+    <ol>
+        <li>Tato Smlouva nabývá platnosti a účinnosti dnem podpisu oběma smluvními stranami.</li>
+        <li>Smlouva je vyhotovena ve dvou stejnopisech, z nichž každá smluvní strana obdrží jeden.</li>
+        <li>Veškeré změny a doplňky Smlouvy musí být učiněny písemně formou číslovaných dodatků podepsaných oběma smluvními stranami.</li>
+        <li>Právní vztahy touto Smlouvou neupravené se řídí příslušnými ustanoveními Občanského zákoníku.</li>
+        <li>Zhotovitel prohlašuje, že veškeré daňové povinnosti vyplývající z odměny dle této Smlouvy si zajišťuje sám.</li>
+    </ol>
+</div>
+
+<p style="margin-top:30px;">V Praze dne <span class="highlight" id="signDate">_______________</span></p>
+
+<div class="signatures">
+    <div class="sig-block">
+        <div class="sig-line">
+            Jan Formánek<br>
+            Hops s.r.o. – objednatel
+        </div>
+    </div>
+    <div class="sig-block">
+        <div class="sig-line">
+            <span id="sigName">_______________</span><br>
+            zhotovitel
+        </div>
+    </div>
+</div>
+
+<script>
+// Fill data from URL params
+const params = new URLSearchParams(window.location.search);
+const fill = (id, val) => { if (val) document.getElementById(id).textContent = val; };
+
+fill('workerName', params.get('name'));
+fill('workerBirthId', params.get('birthId') || params.get('birthDate') || '');
+fill('workerAddress', params.get('address'));
+fill('workerPhone', params.get('phone'));
+fill('workerBank', params.get('bankAccount'));
+fill('workerRate', params.get('rate'));
+fill('sigName', params.get('name'));
+fill('startDate', params.get('startDate'));
+
+// Rate to words
+const rate = parseInt(params.get('rate'));
+const words = {100:'sto',150:'sto padesát',200:'dvě stě',250:'dvě stě padesát',300:'tři sta',350:'tři sta padesát',400:'čtyři sta'};
+fill('workerRateWords', (words[rate] || '___') + ' korun českých');
+
+// Sign date = today
+const today = new Date();
+fill('signDate', today.getDate() + '. ' + (today.getMonth()+1) + '. ' + today.getFullYear());
+</script>
+</body>
+</html>
