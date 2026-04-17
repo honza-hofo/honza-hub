@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Náklady domácnosti</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f5f5f5;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        .date {
+            text-align: center;
+            color: #888;
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+        }
+        th {
+            background: #2c3e50;
+            color: #fff;
+            font-weight: 600;
+        }
+        td:last-child {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        .section {
+            background: #ecf0f1 !important;
+            font-weight: 700;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #555;
+        }
+        .section td {
+            padding: 10px 16px;
+        }
+        .total {
+            font-weight: 700;
+            background: #2c3e50 !important;
+            color: #fff;
+        }
+        .total td {
+            padding: 14px 16px;
+            font-size: 1.05em;
+        }
+        .income {
+            background: #27ae60 !important;
+            color: #fff;
+        }
+        .income td {
+            font-weight: 600;
+        }
+        .result {
+            background: #2980b9 !important;
+            color: #fff;
+        }
+        .result td {
+            padding: 16px;
+            font-size: 1.15em;
+            font-weight: 700;
+        }
+        .firma {
+            color: #888;
+            font-style: italic;
+        }
+        .summary {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 24px;
+            gap: 16px;
+        }
+        .summary-box {
+            flex: 1;
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .summary-box .label {
+            font-size: 0.85em;
+            color: #888;
+            margin-bottom: 6px;
+        }
+        .summary-box .value {
+            font-size: 1.6em;
+            font-weight: 700;
+        }
+        .green { color: #27ae60; }
+        .red { color: #e74c3c; }
+        .blue { color: #2980b9; }
+    </style>
+</head>
+<body>
+    <h1>Náklady domácnosti</h1>
+    <p class="date">Aktualizováno: 17. 4. 2026</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Položka</th>
+                <th>Kč / měsíc</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="section"><td colspan="2">Příjmy</td></tr>
+            <tr class="income"><td>Honza</td><td>100 000</td></tr>
+            <tr class="income"><td>Eliška</td><td>40 000</td></tr>
+            <tr class="income"><td>Nájem (byt 2)</td><td>30 000</td></tr>
+            <tr class="income"><td>Poplatky od nájemníka</td><td>5 000</td></tr>
+            <tr class="total"><td>Příjmy celkem</td><td>175 000</td></tr>
+
+            <tr class="section"><td colspan="2">Byt 1</td></tr>
+            <tr><td>Hypotéka</td><td>37 104</td></tr>
+            <tr><td>SVJ (voda + teplo)</td><td>4 132</td></tr>
+            <tr><td>Elektřina</td><td>1 040</td></tr>
+            <tr><td>Internet</td><td>550</td></tr>
+            <tr><td>Pojištění nemovitosti</td><td>458</td></tr>
+
+            <tr class="section"><td colspan="2">Byt 2</td></tr>
+            <tr><td>Hypotéka</td><td>42 000</td></tr>
+            <tr><td>Elektřina</td><td>2 000</td></tr>
+            <tr><td>Internet</td><td>700</td></tr>
+
+            <tr class="section"><td colspan="2">Ostatní</td></tr>
+            <tr><td>Jídlo</td><td>12 000</td></tr>
+            <tr><td>Auto + telefony</td><td class="firma">platí firma</td></tr>
+
+            <tr class="total"><td>Náklady celkem</td><td>100 984</td></tr>
+
+            <tr class="result"><td>Zbývá</td><td>74 016</td></tr>
+        </tbody>
+    </table>
+
+    <div class="summary">
+        <div class="summary-box">
+            <div class="label">Příjmy</div>
+            <div class="value green">175 000 Kč</div>
+        </div>
+        <div class="summary-box">
+            <div class="label">Náklady</div>
+            <div class="value red">100 984 Kč</div>
+        </div>
+        <div class="summary-box">
+            <div class="label">Zbývá (42 %)</div>
+            <div class="value blue">74 016 Kč</div>
+        </div>
+    </div>
+</body>
+</html>
