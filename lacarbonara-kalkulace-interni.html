@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="cs"><head><meta charset="UTF-8"><title>INTERNÍ kalkulace – Rozvoz La Carbonara</title><meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body{margin:0;background:#111827;color:#e5e7eb;font-family:-apple-system,Arial,sans-serif;padding:24px;}
+  .wrap{max-width:760px;margin:0 auto;}
+  h1{font-size:20px;color:#fff;margin:0 0 4px;}
+  .sub{color:#9ca3af;font-size:13px;margin:0 0 24px;}
+  .card{background:#1f2937;border:1px solid #374151;border-radius:10px;padding:18px 20px;margin:0 0 18px;}
+  .card h2{font-size:14px;text-transform:uppercase;letter-spacing:1px;color:#00A3B7;margin:0 0 14px;}
+  table{width:100%;border-collapse:collapse;font-size:14px;}
+  td{padding:8px 6px;border-bottom:1px solid #374151;}
+  td.r{text-align:right;white-space:nowrap;font-weight:bold;}
+  .muted{color:#9ca3af;font-size:12px;}
+  .total td{border-top:2px solid #00A3B7;border-bottom:none;padding-top:12px;font-size:16px;}
+  .profit{color:#34d399;}
+  .warn{background:#422006;border:1px solid #92400e;color:#fbbf24;border-radius:8px;padding:12px 14px;font-size:13px;margin:0 0 18px;}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .big{font-size:26px;font-weight:bold;color:#fff;}
+</style></head>
+<body><div class="wrap">
+  <h1>🔒 INTERNÍ kalkulace — Rozvoz La Carbonara</h1>
+  <p class="sub">Praha → Litovel → Jihlava → České Budějovice → Praha · 1 auto · same-day · vytvořeno 10. 9. 2026</p>
+
+  <div class="warn">⚠️ Sazby: řidič 250 Kč/h, <b>nafta 48 Kč/l</b> (aktuální), amortizace 3 Kč/km, marže 1 800/závoz. Před odesláním nabídky potvrdit s Honzou.</div>
+
+  <div class="card">
+    <h2>Trasa &amp; km (ověřeno OSRM −7 %)</h2>
+    <table>
+      <tr><td>Praha (depo) → Litovel <span class="muted">nakládka</span></td><td class="r">~206 km</td><td class="r muted">2 h 35</td></tr>
+      <tr><td>Litovel → Jihlava <span class="muted">vykládka</span></td><td class="r">~165 km</td><td class="r muted">1 h 55</td></tr>
+      <tr><td>Jihlava → České Budějovice <span class="muted">vykládka</span></td><td class="r">~118 km</td><td class="r muted">1 h 40</td></tr>
+      <tr><td>České Budějovice → Praha (depo)</td><td class="r">~143 km</td><td class="r muted">1 h 50</td></tr>
+      <tr class="total"><td>Celkem / závoz</td><td class="r">~632 km</td><td class="r muted">~8 h jízda / ~9,5 h služba</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Náklady na 1 závoz</h2>
+    <table>
+      <tr><td>Palivo (nafta)<br><span class="muted">632 km × 9 l/100 km × 48 Kč/l</span></td><td class="r">2 730 Kč</td></tr>
+      <tr><td>Amortizace + pneu + opravy<br><span class="muted">632 km × 3 Kč</span></td><td class="r">1 900 Kč</td></tr>
+      <tr><td>Řidič<br><span class="muted">~9,5 h × 250 Kč + stravné</span></td><td class="r">2 400 Kč</td></tr>
+      <tr><td>Mýto / dálniční známka <span class="muted">(paušál)</span></td><td class="r">140 Kč</td></tr>
+      <tr class="total"><td>Náklady celkem</td><td class="r">~7 170 Kč</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Cena &amp; zisk</h2>
+    <table>
+      <tr><td>Náklady / závoz</td><td class="r">7 170 Kč</td></tr>
+      <tr><td>Marže</td><td class="r profit">+1 800 Kč</td></tr>
+      <tr><td>Zaokrouhleno</td><td class="r">+30 Kč</td></tr>
+      <tr class="total"><td><b>Cena / závoz</b></td><td class="r">9 000 Kč</td></tr>
+      <tr class="total"><td>Zisk / závoz</td><td class="r profit">~1 830 Kč</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Souhrn (2 závozy / týden)</h2>
+    <div class="grid">
+      <div><p class="muted" style="margin:0 0 4px;">Týdně</p><p class="big">18 000 Kč</p><p class="muted">zisk ~3 660 Kč · ~1 264 km</p></div>
+      <div><p class="muted" style="margin:0 0 4px;">Měsíčně (~8,7 závozu)</p><p class="big">~78 000 Kč</p><p class="muted">zisk ~15 900 Kč · ~5 500 km</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Poznámky / rizika</h2>
+    <table>
+      <tr><td>~8 h čisté jízdy je na denním limitu řidiče (max 9 h, 2× týdně 10 h) — legální, ale plný den. Jeden řidič = OK.</td></tr>
+      <tr><td>Časová rezerva do ČB 18:00 je ~1 h — pohodové.</td></tr>
+      <tr><td>Ověřit s prodejnami, že vykládka odpoledne vyhovuje (v tabulce uvedeny ranní příjmové hodiny 6:30–7:30).</td></tr>
+      <tr><td>Litovel→Jihlava OSRM routuje přes D1 (Brno). Kratší trasa přes Vysočinu může km mírně snížit — ověřit reálně u řidiče.</td></tr>
+    </table>
+  </div>
+</div></body></html>
